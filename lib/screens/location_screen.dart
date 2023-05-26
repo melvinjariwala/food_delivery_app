@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:flutter/src/widgets/container.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
@@ -16,15 +18,75 @@ class LocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Location"),
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: const GoogleMap(
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(21.1601315, 72.8164894), zoom: 18)),
+          ),
+          Positioned(
+              top: 40,
+              left: 20,
+              right: 20,
+              child: Container(
+                height: 100,
+                child: Row(
+                  children: [
+                    SvgPicture.asset('assets/logo.svg', height: 50),
+                    const SizedBox(width: 10),
+                    const Expanded(child: LocationSearchBox()),
+                  ],
+                ),
+              )),
+          Positioned(
+              bottom: 50,
+              left: 20,
+              right: 20,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 90),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor),
+                  child: Text(
+                    'Save',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+              ))
+        ],
       ),
-      body: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, HomeScreen.routeName);
-          },
-          child: const Text("Home")),
+    );
+  }
+}
+
+class LocationSearchBox extends StatelessWidget {
+  const LocationSearchBox({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: TextField(
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: 'Enter your Location',
+              suffixIcon: const Icon(Icons.search),
+              contentPadding:
+                  const EdgeInsets.only(top: 20, bottom: 5, right: 5),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(21),
+                  borderSide: const BorderSide(color: Colors.white)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.white)))),
     );
   }
 }
