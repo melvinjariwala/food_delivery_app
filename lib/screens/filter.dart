@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/location_screen.dart';
 //import 'package:flutter/src/widgets/container.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
-class LocationScreen extends StatelessWidget {
-  const LocationScreen({super.key});
-  static const String routeName = '/location';
+class FilterScreen extends StatelessWidget {
+  const FilterScreen({super.key});
+  static const String routeName = '/filter';
 
   static Route route() {
     return MaterialPageRoute(
-        builder: (_) => const LocationScreen(),
+        builder: (_) => const FilterScreen(),
         settings: const RouteSettings(name: routeName));
   }
 
@@ -18,13 +18,13 @@ class LocationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Location"),
+        title: const Text("Home"),
       ),
       body: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, HomeScreen.routeName);
+            Navigator.pushNamed(context, LocationScreen.routeName);
           },
-          child: const Text("Home")),
+          child: const Text("Location Screen")),
     );
   }
 }
