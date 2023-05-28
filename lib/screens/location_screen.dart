@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_delivery_app/blocs/geolocation/geolocation_bloc.dart';
+import 'package:food_delivery_app/widgets/location_search_box.dart';
 //import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:flutter/src/widgets/container.dart';
@@ -21,13 +24,34 @@ class LocationScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height,
-            width: double.infinity,
-            child: const GoogleMap(
-                myLocationEnabled: true,
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(21.1601315, 72.8164894), zoom: 18)),
-          ),
+              height: MediaQuery.of(context).size.height,
+              width: double.maxFinite,
+              child: BlocBuilder<GeolocationBloc, GeolocationState>(
+                builder: (context, state) {
+                  if (state is GeolocationLoaded) {
+                    print('Loaded');
+                    return GoogleMap(
+                        onMapCreated: ((controller) {
+                          context
+                              .read<GeolocationBloc>()
+                              .add(LoadGeolocation(controller: controller));
+                        }),
+                        myLocationEnabled: true,
+                        //myLocationButtonEnabled: true,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(state.lat, state.lng), zoom: 18));
+                  } else if (state is GeolocationLoading) {
+                    print("Loading");
+                    return Center(
+                      child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor),
+                    );
+                  } else {
+                    const Center(child: Text("Something went wrong"));
+                  }
+                  return const Text("Something went wrong");
+                },
+              )),
           Positioned(
               top: 40,
               left: 20,
@@ -60,33 +84,6 @@ class LocationScreen extends StatelessWidget {
               ))
         ],
       ),
-    );
-  }
-}
-
-class LocationSearchBox extends StatelessWidget {
-  const LocationSearchBox({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: TextField(
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: 'Enter your Location',
-              suffixIcon: const Icon(Icons.search),
-              contentPadding:
-                  const EdgeInsets.only(top: 20, bottom: 5, right: 5),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(21),
-                  borderSide: const BorderSide(color: Colors.white)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.white)))),
     );
   }
 }
