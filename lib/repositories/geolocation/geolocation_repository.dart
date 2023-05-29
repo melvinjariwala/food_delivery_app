@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:food_delivery_app/repositories/geolocation/base_geolocation_repository.dart';
 import 'package:geolocator/geolocator.dart';
 
