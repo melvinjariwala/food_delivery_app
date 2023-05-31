@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'menu_item_model.dart' as Item;
 
 class Restaurant extends Equatable {
@@ -23,7 +22,6 @@ class Restaurant extends Equatable {
       required this.distance});
 
   @override
-  // TODO: implement props
   List<Object?> get props =>
       [id, name, imgUrl, tags, menuItems, deliveryTime, deliveryFee, distance];
 

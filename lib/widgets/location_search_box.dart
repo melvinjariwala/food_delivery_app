@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery_app/screens/location_screen.dart';
 
 import '../blocs/autocomplete/autocomplete_bloc.dart';
 

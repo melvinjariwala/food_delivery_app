@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:food_delivery_app/models/place_model.dart';
 
 import '../../models/place_autocomplete_model.dart';
