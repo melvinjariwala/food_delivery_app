@@ -10,6 +10,7 @@ ThemeData theme() {
       primaryColorLight: const Color(0xFFFFF068),
       scaffoldBackgroundColor: Colors.white,
       backgroundColor: const Color(0xFFF5F5F5),
+      cardColor: const Color(0xFFFC9C3C),
       fontFamily: 'Futura',
       textTheme: const TextTheme(
           headline1: TextStyle(

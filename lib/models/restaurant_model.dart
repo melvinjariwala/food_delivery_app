@@ -11,7 +11,7 @@ class Restaurant extends Equatable {
   final double deliveryFee;
   final double distance;
 
-  Restaurant(
+  const Restaurant(
       {required this.id,
       required this.name,
       required this.imgUrl,
@@ -31,9 +31,13 @@ class Restaurant extends Equatable {
         name: 'Geetha Restaurant',
         imgUrl:
             "https://lh5.googleusercontent.com/p/AF1QipOlOWdqWhzm99NEXDo2PlbLOA6DBYa9EQj3JWim=w325-h218-n-k-no",
-        tags: ['North Indian', 'South Indian', 'Fast Food'],
+        tags: Item.MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 1)
+            .map((menuItem) => menuItem.category)
+            .toSet()
+            .toList(),
         menuItems: Item.MenuItem.menuItems
-            .where((menuItem) => menuItem.restaurantId == '1')
+            .where((menuItem) => menuItem.restaurantId == 1)
             .toList(),
         deliveryTime: 30,
         deliveryFee: 2.99,
@@ -43,9 +47,13 @@ class Restaurant extends Equatable {
         name: 'Geetha Restaurant',
         imgUrl:
             "https://lh5.googleusercontent.com/p/AF1QipOlOWdqWhzm99NEXDo2PlbLOA6DBYa9EQj3JWim=w325-h218-n-k-no",
-        tags: ['North Indian', 'South Indian', 'Fast Food'],
+        tags: Item.MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 2)
+            .map((menuItem) => menuItem.category)
+            .toSet()
+            .toList(),
         menuItems: Item.MenuItem.menuItems
-            .where((menuItem) => menuItem.restaurantId == '1')
+            .where((menuItem) => menuItem.restaurantId == 1)
             .toList(),
         deliveryTime: 30,
         deliveryFee: 2.99,
@@ -55,9 +63,13 @@ class Restaurant extends Equatable {
         name: 'Geetha Restaurant',
         imgUrl:
             "https://lh5.googleusercontent.com/p/AF1QipOlOWdqWhzm99NEXDo2PlbLOA6DBYa9EQj3JWim=w325-h218-n-k-no",
-        tags: ['North Indian', 'South Indian', 'Fast Food'],
+        tags: Item.MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 3)
+            .map((menuItem) => menuItem.category)
+            .toSet()
+            .toList(),
         menuItems: Item.MenuItem.menuItems
-            .where((menuItem) => menuItem.restaurantId == '1')
+            .where((menuItem) => menuItem.restaurantId == 3)
             .toList(),
         deliveryTime: 30,
         deliveryFee: 2.99,
@@ -67,9 +79,13 @@ class Restaurant extends Equatable {
         name: 'Geetha Restaurant',
         imgUrl:
             "https://lh5.googleusercontent.com/p/AF1QipOlOWdqWhzm99NEXDo2PlbLOA6DBYa9EQj3JWim=w325-h218-n-k-no",
-        tags: ['North Indian', 'South Indian', 'Fast Food'],
+        tags: Item.MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 4)
+            .map((menuItem) => menuItem.category)
+            .toSet()
+            .toList(),
         menuItems: Item.MenuItem.menuItems
-            .where((menuItem) => menuItem.restaurantId == '1')
+            .where((menuItem) => menuItem.restaurantId == 4)
             .toList(),
         deliveryTime: 30,
         deliveryFee: 2.99,
@@ -79,9 +95,13 @@ class Restaurant extends Equatable {
         name: 'Geetha Restaurant',
         imgUrl:
             "https://lh5.googleusercontent.com/p/AF1QipOlOWdqWhzm99NEXDo2PlbLOA6DBYa9EQj3JWim=w325-h218-n-k-no",
-        tags: ['North Indian', 'South Indian', 'Fast Food'],
+        tags: Item.MenuItem.menuItems
+            .where((menuItem) => menuItem.restaurantId == 5)
+            .map((menuItem) => menuItem.category)
+            .toSet()
+            .toList(),
         menuItems: Item.MenuItem.menuItems
-            .where((menuItem) => menuItem.restaurantId == '1')
+            .where((menuItem) => menuItem.restaurantId == 5)
             .toList(),
         deliveryTime: 30,
         deliveryFee: 2.99,

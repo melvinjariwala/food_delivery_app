@@ -7,6 +7,7 @@ import 'package:food_delivery_app/config/app_router.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/restaurant_details.dart';
 
 import 'config/theme.dart';
 

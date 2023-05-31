@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/models/promo_model.dart';
+import 'package:food_delivery_app/screens/restaurant_details.dart';
 import 'package:food_delivery_app/widgets/category_box.dart';
 import 'package:food_delivery_app/widgets/food_search_box.dart';
 import 'package:food_delivery_app/widgets/promo_box.dart';
+import 'package:food_delivery_app/widgets/restaurant_tags.dart';
 //import 'package:flutter/src/widgets/container.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
@@ -90,65 +92,70 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  image: DecorationImage(
-                      image: NetworkImage(restaurant.imgUrl),
-                      fit: BoxFit.cover)),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: Container(
-                  width: 60,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "${restaurant.deliveryTime} min",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  )),
-            )
-          ]),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+      child: Material(
+        elevation: 3,
+        borderRadius: BorderRadius.circular(12.0),
+        //color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, RestaurantDetailsScreen.routeName,
+                  arguments: restaurant);
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(restaurant.name,
-                    style: Theme.of(context).textTheme.headline4),
-                const SizedBox(height: 5.0),
-                Row(
-                    children: restaurant.tags
-                        .map((tag) => restaurant.tags.indexOf(tag) ==
-                                restaurant.tags.length - 1
-                            ? Text(tag,
-                                style: Theme.of(context).textTheme.bodyText1)
-                            : Text(
-                                "$tag, ",
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ))
-                        .toList()),
-                const SizedBox(height: 5.0),
-                Text(
-                  "${restaurant.distance} Km - \$${restaurant.deliveryFee} Delivery fee",
-                  style: Theme.of(context).textTheme.bodyText1,
+                Stack(children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        image: DecorationImage(
+                            image: NetworkImage(restaurant.imgUrl),
+                            fit: BoxFit.cover)),
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                        width: 60,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0)),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${restaurant.deliveryTime} min",
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        )),
+                  )
+                ]),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(restaurant.name,
+                          style: Theme.of(context).textTheme.headline4),
+                      const SizedBox(height: 5.0),
+                      RestaurantTags(restaurant: restaurant),
+                      const SizedBox(height: 5.0),
+                      Text(
+                        "${restaurant.distance} Km - \$${restaurant.deliveryFee} Delivery fee",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

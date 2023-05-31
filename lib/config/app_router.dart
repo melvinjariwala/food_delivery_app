@@ -2,6 +2,7 @@
 // ignore_for_file: avoid_print, no_duplicate_case_values
 
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/screens/basket.dart';
 import 'package:food_delivery_app/screens/checkout.dart';
 import 'package:food_delivery_app/screens/delivery_time.dart';
@@ -31,7 +32,8 @@ class AppRouter {
       case FilterScreen.routeName:
         return FilterScreen.route();
       case RestaurantDetailsScreen.routeName:
-        return RestaurantDetailsScreen.route();
+        return RestaurantDetailsScreen.route(
+            restaurant: settings.arguments as Restaurant);
       case RestaurantListingScreen.routeName:
         return RestaurantListingScreen.route();
       case VoucherScreen.routeName:

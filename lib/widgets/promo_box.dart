@@ -61,8 +61,8 @@ class PromoCustomClipper extends CustomClipper<Path> {
     var path = new Path();
     path.lineTo(0, 0);
     path.lineTo(0, size.height);
-    path.lineTo(225, size.height);
-    path.lineTo(300, 0);
+    path.lineTo(200, size.height);
+    path.lineTo(250, 0);
 
     return path;
   }
