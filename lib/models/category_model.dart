@@ -14,8 +14,8 @@ class Category extends Equatable {
   static List<Category> categories = [
     Category(id: 1, name: 'Pizza', image: Image.asset('assets/pizza.png')),
     Category(id: 2, name: 'Burger', image: Image.asset('assets/burger.png')),
-    Category(id: 1, name: 'Salad', image: Image.asset('assets/avocado.png')),
-    Category(id: 1, name: 'Dessert', image: Image.asset('assets/pancake.png')),
-    Category(id: 1, name: 'Drink', image: Image.asset('assets/juice.png')),
+    Category(id: 3, name: 'Salad', image: Image.asset('assets/avocado.png')),
+    Category(id: 4, name: 'Dessert', image: Image.asset('assets/pancake.png')),
+    Category(id: 5, name: 'Drink', image: Image.asset('assets/juice.png')),
   ];
 }
