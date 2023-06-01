@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/screens/filter.dart';
 
 class FoodSearchBox extends StatelessWidget {
   const FoodSearchBox({
@@ -15,7 +16,7 @@ class FoodSearchBox extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Material(
-                elevation: 6,
+                elevation: 3,
                 borderRadius: BorderRadius.circular(32),
                 child: TextField(
                   decoration: InputDecoration(
@@ -39,14 +40,25 @@ class FoodSearchBox extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(12)),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.menu, color: Theme.of(context).primaryColor)),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Material(
+              elevation: 3,
+              borderRadius: BorderRadius.circular(12.0),
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, FilterScreen.routeName);
+                    },
+                    icon: Icon(Icons.menu,
+                        color: Theme.of(context).primaryColor)),
+              ),
+            ),
           )
         ],
       ),

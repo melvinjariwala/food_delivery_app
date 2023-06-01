@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
-import 'package:food_delivery_app/screens/location_screen.dart';
-//import 'package:flutter/src/widgets/container.dart';
-//import 'package:flutter/src/widgets/framework.dart';
 
 class RestaurantListingScreen extends StatelessWidget {
   static const String routeName = '/restaurant_lsiting';
