@@ -10,6 +10,7 @@ class Restaurant extends Equatable {
   final List<String> tags;
   final List<Item.MenuItem> menuItems;
   final int deliveryTime;
+  final String priceCategory;
   final double deliveryFee;
   final double distance;
 
@@ -20,12 +21,22 @@ class Restaurant extends Equatable {
       required this.tags,
       required this.menuItems,
       required this.deliveryTime,
+      required this.priceCategory,
       required this.deliveryFee,
       required this.distance});
 
   @override
-  List<Object?> get props =>
-      [id, name, imgUrl, tags, menuItems, deliveryTime, deliveryFee, distance];
+  List<Object?> get props => [
+        id,
+        name,
+        imgUrl,
+        tags,
+        menuItems,
+        deliveryTime,
+        priceCategory,
+        deliveryFee,
+        distance
+      ];
 
   static List<Restaurant> restaurants = [
     Restaurant(
@@ -42,6 +53,7 @@ class Restaurant extends Equatable {
             .where((menuItem) => menuItem.restaurantId == 1)
             .toList(),
         deliveryTime: 30,
+        priceCategory: "\$",
         deliveryFee: 2.99,
         distance: 0.1),
     Restaurant(
@@ -58,6 +70,7 @@ class Restaurant extends Equatable {
             .where((menuItem) => menuItem.restaurantId == 1)
             .toList(),
         deliveryTime: 30,
+        priceCategory: "\$\$",
         deliveryFee: 2.99,
         distance: 0.1),
     Restaurant(
@@ -74,6 +87,7 @@ class Restaurant extends Equatable {
             .where((menuItem) => menuItem.restaurantId == 3)
             .toList(),
         deliveryTime: 30,
+        priceCategory: "\$\$\$",
         deliveryFee: 2.99,
         distance: 0.1),
     Restaurant(
@@ -90,6 +104,7 @@ class Restaurant extends Equatable {
             .where((menuItem) => menuItem.restaurantId == 4)
             .toList(),
         deliveryTime: 30,
+        priceCategory: "\$",
         deliveryFee: 2.99,
         distance: 0.1),
     Restaurant(
@@ -106,6 +121,7 @@ class Restaurant extends Equatable {
             .where((menuItem) => menuItem.restaurantId == 5)
             .toList(),
         deliveryTime: 30,
+        priceCategory: "\$\$",
         deliveryFee: 2.99,
         distance: 0.1),
   ];

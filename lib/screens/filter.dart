@@ -1,4 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/filters/filters_bloc.dart';
+import 'package:food_delivery_app/models/models.dart';
+import 'package:food_delivery_app/screens/restaurant_listing.dart';
 import 'package:food_delivery_app/widgets/custom_category_filter.dart';
 import 'package:food_delivery_app/widgets/custom_price_filter.dart';
 
@@ -25,6 +31,63 @@ class FilterScreen extends StatelessWidget {
                   .copyWith(color: Colors.black)),
           backgroundColor: Theme.of(context).primaryColor,
           leading: const BackButton(color: Colors.black),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<FiltersBloc, FiltersState>(
+                  builder: (context, state) {
+                    if (state is FiltersLoading) {
+                      return Center(
+                          child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor));
+                    }
+                    if (state is FiltersLoaded) {
+                      return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 50),
+                              backgroundColor: Theme.of(context).primaryColor),
+                          onPressed: () {
+                            var categories = state.filter.categoryFilters
+                                .where((filter) => filter.value)
+                                .map((filter) => filter.category.name)
+                                .toList();
+
+                            print("Categories : $categories");
+
+                            var price = state.filter.priceFilters
+                                .where((filter) => filter.value)
+                                .map((filter) => filter.price.price)
+                                .toList();
+
+                            print("Price : $price");
+
+                            List<Restaurant> restaurants = Restaurant
+                                .restaurants
+                                .where((restaurant) => categories.any(
+                                    (category) =>
+                                        restaurant.tags.contains(category)))
+                                .where((restaurant) => price.any((price) =>
+                                    restaurant.priceCategory.contains(price)))
+                                .toList();
+
+                            print("Restaurants : $restaurants");
+
+                            Navigator.pushNamed(
+                                context, RestaurantListingScreen.routeName,
+                                arguments: restaurants);
+                          },
+                          child: const Text("Apply"));
+                    }
+                    return const Center(child: Text("Something went wrong!"));
+                  },
+                )
+              ],
+            ),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
