@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/models.dart';
+import 'package:food_delivery_app/screens/basket.dart';
 import 'package:food_delivery_app/widgets/restaurant_info.dart';
 
 class RestaurantDetailsScreen extends StatelessWidget {
@@ -32,7 +33,9 @@ class RestaurantDetailsScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         backgroundColor: Theme.of(context).primaryColor),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, BasketScreen.routeName);
+                    },
                     child: const Text("Basket"))
               ],
             ),
