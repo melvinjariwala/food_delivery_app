@@ -12,7 +12,7 @@ part 'place_state.dart';
 
 class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
   final PlacesRepository _placesRepository;
-  StreamSubscription? _placesSubscription;
+  //StreamSubscription? _placesSubscription;
   PlaceBloc({required PlacesRepository placesRepository})
       : _placesRepository = placesRepository,
         super(PlaceLoading()) {

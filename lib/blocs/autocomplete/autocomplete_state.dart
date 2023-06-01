@@ -12,7 +12,7 @@ class AutocompleteLoading extends AutocompleteState {}
 class AutocompleteLoaded extends AutocompleteState {
   final List<PlaceAutocomplete> autocomplete;
 
-  AutocompleteLoaded({required this.autocomplete});
+  const AutocompleteLoaded({required this.autocomplete});
 
   @override
   List<Object> get props => [autocomplete];

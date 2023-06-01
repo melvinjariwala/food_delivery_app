@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes
+
 import 'package:equatable/equatable.dart';
 import 'menu_item_model.dart' as Item;
 

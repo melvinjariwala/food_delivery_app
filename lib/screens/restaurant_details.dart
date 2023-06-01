@@ -13,7 +13,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
 
   final Restaurant restaurant;
 
-  const RestaurantDetailsScreen({required this.restaurant});
+  const RestaurantDetailsScreen({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {

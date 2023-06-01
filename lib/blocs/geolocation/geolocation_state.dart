@@ -14,7 +14,8 @@ class GeolocationLoaded extends GeolocationState {
   final double lat;
   final double lng;
 
-  GeolocationLoaded({this.controller, required this.lat, required this.lng});
+  const GeolocationLoaded(
+      {this.controller, required this.lat, required this.lng});
 
   @override
   List<Object?> get props => [controller, lat, lng];

@@ -11,6 +11,7 @@ class PlacesRepository extends BasePlacesRepository {
   final String key = 'AIzaSyDXRiP_8VTNCXdizBhf7nEC54FKJkcMFgg';
   final String types = 'geocode';
 
+  @override
   Future<List<PlaceAutocomplete>> getAutocomplete(String searchInput) async {
     final String url =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$searchInput&types=$types&key=$key';

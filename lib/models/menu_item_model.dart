@@ -9,7 +9,7 @@ class MenuItem extends Equatable {
   final String imgUrl;
   final String category;
 
-  MenuItem({
+  const MenuItem({
     required this.id,
     required this.restaurantId,
     required this.name,
@@ -23,7 +23,7 @@ class MenuItem extends Equatable {
   List<Object?> get props =>
       [id, restaurantId, name, description, price, imgUrl, category];
 
-  static List<MenuItem> menuItems = [
+  static List<MenuItem> menuItems = const [
     MenuItem(
         id: 1,
         restaurantId: 1,

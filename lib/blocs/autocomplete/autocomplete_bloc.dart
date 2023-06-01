@@ -12,7 +12,7 @@ part 'autocomplete_state.dart';
 
 class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
   final PlacesRepository _placesRepository;
-  StreamSubscription? _placesSubscription;
+  //StreamSubscription? _placesSubscription;
   AutocompleteBloc({required PlacesRepository placesRepository})
       : _placesRepository = placesRepository,
         super(AutocompleteLoading()) {

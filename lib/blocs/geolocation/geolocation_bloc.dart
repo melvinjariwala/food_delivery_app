@@ -11,7 +11,7 @@ part 'geolocation_state.dart';
 
 class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   final GeoLocationRepository _geoLocationRepository;
-  StreamSubscription? _geolocationSubscription;
+  //StreamSubscription? _geolocationSubscription;
 
   GeolocationBloc({required GeoLocationRepository geoLocationRepository})
       : _geoLocationRepository = geoLocationRepository,

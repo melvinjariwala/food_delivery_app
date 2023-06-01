@@ -33,7 +33,7 @@ class LocationScreen extends StatelessWidget {
           if (state is PlaceLoading) {
             return Stack(
               children: [
-                Container(
+                SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: double.maxFinite,
                     child: BlocBuilder<GeolocationBloc, GeolocationState>(

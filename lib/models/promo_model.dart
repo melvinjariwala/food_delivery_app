@@ -6,7 +6,7 @@ class Promo extends Equatable {
   final String description;
   final String imgUrl;
 
-  Promo(
+  const Promo(
       {required this.id,
       required this.title,
       required this.description,
@@ -15,7 +15,7 @@ class Promo extends Equatable {
   @override
   List<Object?> get props => [id, title, description, imgUrl];
 
-  static List<Promo> promos = [
+  static List<Promo> promos = const [
     Promo(
         id: 1,
         title: "FREE delivery on first order",
