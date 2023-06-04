@@ -30,6 +30,15 @@ class RemoveItem extends BasketEvent {
   List<Object> get props => [item];
 }
 
+class RemoveAllItem extends BasketEvent {
+  final Item.MenuItem item;
+
+  const RemoveAllItem(this.item);
+
+  @override
+  List<Object> get props => [item];
+}
+
 class ToggleSwitch extends BasketEvent {
   const ToggleSwitch();
   @override

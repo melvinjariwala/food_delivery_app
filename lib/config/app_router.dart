@@ -6,6 +6,7 @@ import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/screens/basket.dart';
 import 'package:food_delivery_app/screens/checkout.dart';
 import 'package:food_delivery_app/screens/delivery_time.dart';
+import 'package:food_delivery_app/screens/edit_basket.dart';
 import 'package:food_delivery_app/screens/filter.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/location_screen.dart';
@@ -29,6 +30,8 @@ class AppRouter {
         return CheckoutScreen.route();
       case DeliveryTime.routeName:
         return DeliveryTime.route();
+      case EditBasketScreen.routeName:
+        return EditBasketScreen.route();
       case FilterScreen.routeName:
         return FilterScreen.route();
       case RestaurantDetailsScreen.routeName:

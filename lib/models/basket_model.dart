@@ -33,7 +33,7 @@ class Basket extends Equatable {
       items.fold(0, (total, current) => total + current.price);
 
   double total(subtotal) {
-    return subtotal + 5;
+    return subtotal + 2.99;
   }
 
   String get subtotalToString => subtotal.toStringAsFixed(2);

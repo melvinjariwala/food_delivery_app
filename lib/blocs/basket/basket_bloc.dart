@@ -15,6 +15,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     on<StartBasket>(startBasket);
     on<AddItem>(addItem);
     on<RemoveItem>(removeItem);
+    on<RemoveAllItem>(removeAllItem);
     on<ToggleSwitch>(toggleSwitch);
   }
 
@@ -58,6 +59,21 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
             basket: currentState.basket.copyWith(items: updateItems)));
       } catch (e) {
         print("Error in removeItem : $e");
+      }
+    }
+  }
+
+  FutureOr<void> removeAllItem(RemoveAllItem event, Emitter<BasketState> emit) {
+    if (state is BasketLoaded) {
+      try {
+        final BasketLoaded currentState = state as BasketLoaded;
+        final List<Item.MenuItem> updateItems =
+            List.from(currentState.basket.items);
+        updateItems.removeWhere((item) => item == event.item);
+        emit(BasketLoaded(
+            basket: currentState.basket.copyWith(items: updateItems)));
+      } catch (e) {
+        print("Error is removeAllItem : $e");
       }
     }
   }

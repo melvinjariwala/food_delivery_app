@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
+import 'package:food_delivery_app/screens/edit_basket.dart';
 
 class BasketScreen extends StatelessWidget {
   const BasketScreen({super.key});
@@ -30,7 +31,9 @@ class BasketScreen extends StatelessWidget {
           leading: const BackButton(color: Colors.black),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, EditBasketScreen.routeName);
+                },
                 icon: const Icon(Icons.edit, color: Colors.black))
           ],
         ),
@@ -41,7 +44,8 @@ class BasketScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor),
             onPressed: () {},
-            child: const Text("Checkout"),
+            child:
+                const Text("Checkout", style: TextStyle(color: Colors.black)),
           ),
         )),
         body: Padding(
@@ -82,6 +86,7 @@ class BasketScreen extends StatelessWidget {
                           return SizedBox(
                             width: 100,
                             child: SwitchListTile(
+                              activeColor: Theme.of(context).primaryColor,
                               dense: false,
                               value: state.basket.cutlery,
                               onChanged: (bool? newValue) {
@@ -254,49 +259,64 @@ class BasketScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(9.0)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Subtotal",
-                              style: Theme.of(context).textTheme.headline6),
-                          Text("\$19.96",
-                              style: Theme.of(context).textTheme.headline6),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Delivery Fee",
-                              style: Theme.of(context).textTheme.headline6),
-                          Text("\$2.99",
-                              style: Theme.of(context).textTheme.headline6),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Total",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(
-                                      color:
-                                          Theme.of(context).primaryColorDark)),
-                          Text("\$22.95",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(
-                                      color:
-                                          Theme.of(context).primaryColorDark)),
-                        ],
-                      )
-                    ],
+                  child: BlocBuilder<BasketBloc, BasketState>(
+                    builder: (context, state) {
+                      if (state is BasketLoading) {
+                        return Center(
+                            child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor));
+                      } else if (state is BasketLoaded) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Subtotal",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                                Text("\$${state.basket.subtotal}",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                              ],
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Delivery Fee",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                                Text("\$2.99",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                              ],
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Total",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .primaryColorDark)),
+                                Text("\$${state.basket.totalToString}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .primaryColorDark)),
+                              ],
+                            )
+                          ],
+                        );
+                      }
+                      return const Center(child: Text("Something went wrong!"));
+                    },
                   ))
             ],
           ),
