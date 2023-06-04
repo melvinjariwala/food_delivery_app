@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
 import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/screens/basket.dart';
 import 'package:food_delivery_app/widgets/restaurant_info.dart';
@@ -105,10 +109,19 @@ Widget _buildMenuItems(BuildContext context, Restaurant restaurant, int index) {
                             children: [
                               Text("\$${menuItem.price}",
                                   style: Theme.of(context).textTheme.bodyText1),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.add_circle,
-                                      color: Theme.of(context).primaryColor))
+                              BlocBuilder<BasketBloc, BasketState>(
+                                builder: (context, state) {
+                                  return IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<BasketBloc>()
+                                            .add(AddItem(menuItem));
+                                      },
+                                      icon: Icon(Icons.add_circle,
+                                          color:
+                                              Theme.of(context).primaryColor));
+                                },
+                              )
                             ],
                           ),
                         ),
