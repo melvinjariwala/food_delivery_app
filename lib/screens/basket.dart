@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
 import 'package:food_delivery_app/screens/edit_basket.dart';
+import 'package:food_delivery_app/screens/voucher.dart';
 
 class BasketScreen extends StatelessWidget {
   const BasketScreen({super.key});
@@ -230,22 +231,44 @@ class BasketScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text("Do you have a voucher?",
-                            style: Theme.of(context).textTheme.headline6),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text("Apply",
+                    BlocBuilder<BasketBloc, BasketState>(
+                      builder: (context, state) {
+                        if (state is BasketLoaded) {
+                          return state.basket.voucher == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    Text("Do you have a voucher?",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, VoucherScreen.routeName);
+                                        },
+                                        child: Text("Apply",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .primaryColorDark))),
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text("Your voucher is applied!"));
+                        }
+                        return Center(
+                            child: Text("Something went wrong!",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6!
                                     .copyWith(
                                         color: Theme.of(context)
-                                            .primaryColorDark))),
-                      ],
+                                            .primaryColorDark)));
+                      },
                     ),
                     SvgPicture.asset('assets/delivery_time.svg'),
                   ],

@@ -161,7 +161,12 @@ class RestaurantCard extends StatelessWidget {
   }
 }
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+mixin AppBarMixin implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class CustomAppBar extends StatelessWidget with AppBarMixin {
   const CustomAppBar({
     Key? key,
   }) : super(key: key);

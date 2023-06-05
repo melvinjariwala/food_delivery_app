@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery_app/models/basket_model.dart';
 import 'package:food_delivery_app/models/menu_item_model.dart' as Item;
+import 'package:food_delivery_app/models/voucher_model.dart';
 
 part 'basket_event.dart';
 part 'basket_state.dart';
@@ -17,6 +18,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     on<RemoveItem>(removeItem);
     on<RemoveAllItem>(removeAllItem);
     on<ToggleSwitch>(toggleSwitch);
+    on<AddVoucher>(addVoucher);
   }
 
   FutureOr<void> startBasket(
@@ -87,6 +89,18 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
                 .copyWith(cutlery: !currentState.basket.cutlery)));
       } catch (e) {
         print("Error is toggleSwitch : $e");
+      }
+    }
+  }
+
+  FutureOr<void> addVoucher(AddVoucher event, Emitter<BasketState> emit) {
+    if (state is BasketLoaded) {
+      try {
+        final BasketLoaded currentState = state as BasketLoaded;
+        emit(BasketLoaded(
+            basket: currentState.basket.copyWith(voucher: event.voucher)));
+      } catch (e) {
+        print("Error in addVoucher : $e");
       }
     }
   }

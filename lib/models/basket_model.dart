@@ -1,20 +1,29 @@
 // ignore_for_file: library_prefixes
 
 import 'package:equatable/equatable.dart';
+import 'package:food_delivery_app/models/voucher_model.dart';
 import 'menu_item_model.dart' as Item;
 
 class Basket extends Equatable {
   final List<Item.MenuItem> items;
   final bool cutlery;
+  final Voucher? voucher;
 
-  Basket({this.items = const <Item.MenuItem>[], this.cutlery = false});
+  const Basket(
+      {this.items = const <Item.MenuItem>[],
+      this.cutlery = false,
+      this.voucher});
 
-  Basket copyWith({List<Item.MenuItem>? items, bool? cutlery}) {
-    return Basket(items: items ?? this.items, cutlery: cutlery ?? this.cutlery);
+  Basket copyWith(
+      {List<Item.MenuItem>? items, bool? cutlery, Voucher? voucher}) {
+    return Basket(
+        items: items ?? this.items,
+        cutlery: cutlery ?? this.cutlery,
+        voucher: voucher ?? this.voucher);
   }
 
   @override
-  List<Object?> get props => [items, cutlery];
+  List<Object?> get props => [items, cutlery, voucher];
 
   Map itemQuantity(items) {
     var quantity = {};
@@ -33,7 +42,7 @@ class Basket extends Equatable {
       items.fold(0, (total, current) => total + current.price);
 
   double total(subtotal) {
-    return subtotal + 2.99;
+    return voucher == null ? subtotal + 2.99 : subtotal + 2.99 - voucher!.value;
   }
 
   String get subtotalToString => subtotal.toStringAsFixed(2);

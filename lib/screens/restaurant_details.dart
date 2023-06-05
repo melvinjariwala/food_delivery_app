@@ -40,7 +40,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(context, BasketScreen.routeName);
                     },
-                    child: const Text("Basket"))
+                    child: const Text("Basket",
+                        style: TextStyle(color: Colors.black)))
               ],
             ),
           ),
