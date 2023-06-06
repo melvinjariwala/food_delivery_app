@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
+import 'package:food_delivery_app/screens/delivery_time.dart';
 import 'package:food_delivery_app/screens/edit_basket.dart';
 import 'package:food_delivery_app/screens/voucher.dart';
 
@@ -200,22 +201,39 @@ class BasketScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgPicture.asset('assets/delivery_time.svg'),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text("Delivery in 20 minutes",
-                            style: Theme.of(context).textTheme.headline6),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text("Change",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .primaryColorDark)))
-                      ],
+                    BlocBuilder<BasketBloc, BasketState>(
+                      builder: (context, state) {
+                        if (state is BasketLoaded) {
+                          return (state.basket.deliveryTime == null)
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    Text("Delivery in 20 minutes",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context,
+                                              DeliveryTimeScreen.routeName);
+                                        },
+                                        child: Text("Change",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .primaryColorDark)))
+                                  ],
+                                )
+                              : Text(
+                                  'Delivery at ${state.basket.deliveryTime!.value}',
+                                  style: Theme.of(context).textTheme.headline6);
+                        }
+                        return const Center(
+                            child: Text("Something went wrong!"));
+                      },
                     )
                   ],
                 ),

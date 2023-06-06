@@ -28,8 +28,8 @@ class AppRouter {
         return BasketScreen.route();
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
-      case DeliveryTime.routeName:
-        return DeliveryTime.route();
+      case DeliveryTimeScreen.routeName:
+        return DeliveryTimeScreen.route();
       case EditBasketScreen.routeName:
         return EditBasketScreen.route();
       case FilterScreen.routeName:
