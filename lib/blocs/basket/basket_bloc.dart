@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print, library_prefixes, depend_on_referenced_packages
+// ignore_for_file: avoid_print, library_prefixes, depend_on_referenced_packages, unused_field
 
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/models/basket_model.dart';
 import 'package:food_delivery_app/models/deliver_time_model.dart';
 import 'package:food_delivery_app/models/menu_item_model.dart' as Item;
@@ -13,14 +14,24 @@ part 'basket_event.dart';
 part 'basket_state.dart';
 
 class BasketBloc extends Bloc<BasketEvent, BasketState> {
-  BasketBloc() : super(BasketLoading()) {
+  final VoucherBloc _voucherBloc;
+  late StreamSubscription _voucherSubscription;
+  BasketBloc({required VoucherBloc voucherBloc})
+      : _voucherBloc = voucherBloc,
+        super(BasketLoading()) {
     on<StartBasket>(startBasket);
     on<AddItem>(addItem);
     on<RemoveItem>(removeItem);
     on<RemoveAllItem>(removeAllItem);
     on<ToggleSwitch>(toggleSwitch);
-    on<AddVoucher>(addVoucher);
+    on<ApplyVoucher>(applyVoucher);
     on<SelectDeliveryTime>(selectDeliveryTime);
+
+    _voucherSubscription = voucherBloc.stream.listen((state) {
+      if (state is VoucherSelected) {
+        add(ApplyVoucher(state.voucher));
+      }
+    });
   }
 
   FutureOr<void> startBasket(
@@ -31,7 +42,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       print("About to emit BasketLoaded");
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      emit(BasketLoaded(basket: Basket()));
+      emit(const BasketLoaded(basket: Basket()));
     } catch (e) {
       print("Error in startBasket : $e");
     }
@@ -95,7 +106,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     }
   }
 
-  FutureOr<void> addVoucher(AddVoucher event, Emitter<BasketState> emit) {
+  FutureOr<void> applyVoucher(ApplyVoucher event, Emitter<BasketState> emit) {
     if (state is BasketLoaded) {
       try {
         final BasketLoaded currentState = state as BasketLoaded;
