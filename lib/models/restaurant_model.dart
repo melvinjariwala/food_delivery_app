@@ -56,7 +56,7 @@ class Restaurant extends Equatable {
         name: snap['name'],
         imgUrl: snap['imgUrl'],
         description: snap['description'],
-        priceCategory: snap['priceCategory'],
+        //priceCategory: snap['priceCategory'],
         tags: (snap['tags'] as List).map((tag) {
           return tag as String;
         }).toList(),

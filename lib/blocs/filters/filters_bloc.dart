@@ -54,8 +54,8 @@ class FiltersBloc extends Bloc<FiltersEvent, FiltersState> {
       List<Restaurant> filteredRestaurants =
           _getFilteredRestaurants(categories, prices);
 
-      print(
-          "categories : $categories\nprices : $prices\nfilteredRestaurants : $filteredRestaurants\n");
+      // print(
+      //     "categories : $categories\nprices : $prices\nfilteredRestaurants : $filteredRestaurants\n");
 
       emit(FiltersLoaded(
           filter: Filter(
@@ -107,7 +107,8 @@ class FiltersBloc extends Bloc<FiltersEvent, FiltersState> {
             .where((restaurant) =>
                 prices.any((price) => restaurant.priceCategory.contains(price)))
             .toList();
-    print("Filtered Restaurant : $filteredRestaurant");
+    // print(
+    //     "prices:$prices\ncategories:$categories\n Restaurant : $filteredRestaurant");
     return filteredRestaurant;
   }
 }

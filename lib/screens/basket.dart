@@ -209,7 +209,7 @@ class BasketScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     const SizedBox(height: 20),
-                                    Text("Delivery in 20 minutes",
+                                    Text("Delivery in 15 minutes",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6),
