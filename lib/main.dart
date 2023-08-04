@@ -5,6 +5,7 @@ import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
 import 'package:food_delivery_app/blocs/filters/filters_bloc.dart';
 import 'package:food_delivery_app/blocs/geolocation/geolocation_bloc.dart';
 import 'package:food_delivery_app/blocs/place/place_bloc.dart';
+import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/config/app_router.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
@@ -16,6 +17,7 @@ import 'config/theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'repositories/restaurant/restaurant_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<PlacesRepository>(
           create: (_) => PlacesRepository(),
         ),
+        RepositoryProvider<RestaurantRepository>(
+          create: (_) => RestaurantRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -52,8 +57,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<PlaceBloc>(
               create: (context) => PlaceBloc(
                   placesRepository: context.read<PlacesRepository>())),
+          BlocProvider(
+              create: (context) => RestaurantBloc(
+                  restaurantRepository: context.read<RestaurantRepository>())),
           BlocProvider<FiltersBloc>(
-              create: (context) => FiltersBloc()..add(FilterLoad())),
+              create: (context) => FiltersBloc(
+                  restaurantBloc: BlocProvider.of<RestaurantBloc>(context))
+                ..add(FilterLoad())),
           BlocProvider<VoucherBloc>(
               create: (context) =>
                   VoucherBloc(voucherRespository: VoucherRespository())

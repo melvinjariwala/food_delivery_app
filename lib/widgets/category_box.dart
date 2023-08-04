@@ -1,4 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/models/category_model.dart';
 import 'package:food_delivery_app/models/restaurant_model.dart';
 import 'package:food_delivery_app/screens/restaurant_listing.dart';
@@ -9,9 +13,17 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Restaurant> restaurants = Restaurant.restaurants
-        .where((restaurant) => restaurant.tags.contains(category.name))
-        .toList();
+    // List<Restaurant> restaurants = Restaurant.restaurants
+    //     .where((restaurant) => restaurant.tags.contains(category.name))
+    //     .toList();
+    List<Restaurant> restaurants = context.select((RestaurantBloc bloc) {
+      if (bloc.state is RestaurantLoaded) {
+        return (bloc.state as RestaurantLoaded).restaurants;
+      } else {
+        return <Restaurant>[];
+      }
+    });
+
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, RestaurantListingScreen.routeName,
@@ -40,7 +52,7 @@ class CategoryBox extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: Colors.white),
-                    child: category.image,
+                    child: Image.asset(category.imageUrl),
                   ),
                 ),
                 Padding(

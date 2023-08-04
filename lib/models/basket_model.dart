@@ -2,51 +2,51 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery_app/models/deliver_time_model.dart';
+import 'package:food_delivery_app/models/product_model.dart';
 import 'package:food_delivery_app/models/voucher_model.dart';
-import 'menu_item_model.dart' as Item;
 
 class Basket extends Equatable {
-  final List<Item.MenuItem> items;
+  final List<Product> products;
   final bool cutlery;
   final Voucher? voucher;
   final DeliveryTime? deliveryTime;
 
   const Basket(
-      {this.items = const <Item.MenuItem>[],
+      {this.products = const <Product>[],
       this.cutlery = false,
       this.voucher,
       this.deliveryTime});
 
   Basket copyWith(
-      {List<Item.MenuItem>? items,
+      {List<Product>? products,
       bool? cutlery,
       Voucher? voucher,
       DeliveryTime? deliveryTime}) {
     return Basket(
-        items: items ?? this.items,
+        products: products ?? this.products,
         cutlery: cutlery ?? this.cutlery,
         voucher: voucher ?? this.voucher,
         deliveryTime: deliveryTime ?? this.deliveryTime);
   }
 
   @override
-  List<Object?> get props => [items, cutlery, voucher, deliveryTime];
+  List<Object?> get props => [products, cutlery, voucher, deliveryTime];
 
-  Map itemQuantity(items) {
+  Map itemQuantity(products) {
     var quantity = {};
 
-    items.forEach((item) {
-      if (!quantity.containsKey(item)) {
-        quantity[item] = 1;
+    products.forEach((product) {
+      if (!quantity.containsKey(product)) {
+        quantity[product] = 1;
       } else {
-        quantity[item] += 1;
+        quantity[product] += 1;
       }
     });
     return quantity;
   }
 
   double get subtotal =>
-      items.fold(0, (total, current) => total + current.price);
+      products.fold(0, (total, current) => total + current.price);
 
   double total(subtotal) {
     return voucher == null ? subtotal + 2.99 : subtotal + 2.99 - voucher!.value;

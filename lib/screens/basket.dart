@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,8 +123,8 @@ class BasketScreen extends StatelessWidget {
                     );
                   } else if (state is BasketLoaded) {
                     print("State : Basket Loaded");
-                    print("${state.basket.items.length}");
-                    return state.basket.items.isEmpty
+                    print("${state.basket.products.length}");
+                    return state.basket.products.isEmpty
                         ? Container(
                             width: double.infinity,
                             margin: const EdgeInsets.only(top: 5.0),
@@ -146,7 +146,7 @@ class BasketScreen extends StatelessWidget {
                         : ListView.builder(
                             shrinkWrap: true,
                             itemCount: state.basket
-                                .itemQuantity(state.basket.items)
+                                .itemQuantity(state.basket.products)
                                 .keys
                                 .length,
                             itemBuilder: (context, index) {
@@ -161,7 +161,7 @@ class BasketScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Text(
-                                        "${state.basket.itemQuantity(state.basket.items).entries.elementAt(index).value}x",
+                                        "${state.basket.itemQuantity(state.basket.products).entries.elementAt(index).value}x",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6!
@@ -171,13 +171,13 @@ class BasketScreen extends StatelessWidget {
                                     const SizedBox(width: 20),
                                     Expanded(
                                       child: Text(
-                                          "${state.basket.itemQuantity(state.basket.items).keys.elementAt(index).name}",
+                                          "${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).name}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6),
                                     ),
                                     Text(
-                                        "\$${state.basket.itemQuantity(state.basket.items).keys.elementAt(index).price}",
+                                        "\$${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).price}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6),
@@ -200,7 +200,7 @@ class BasketScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset('assets/delivery_time.svg'),
+                    SvgPicture.asset('assets/svgs/delivery_time.svg'),
                     BlocBuilder<BasketBloc, BasketState>(
                       builder: (context, state) {
                         if (state is BasketLoaded) {
@@ -288,7 +288,7 @@ class BasketScreen extends StatelessWidget {
                                             .primaryColorDark)));
                       },
                     ),
-                    SvgPicture.asset('assets/delivery_time.svg'),
+                    SvgPicture.asset('assets/svgs/delivery_time.svg'),
                   ],
                 ),
               ),

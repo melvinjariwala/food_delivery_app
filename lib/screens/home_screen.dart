@@ -1,4 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/models/promo_model.dart';
 import 'package:food_delivery_app/screens/restaurant_details.dart';
@@ -65,17 +69,31 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: Restaurant.restaurants.length,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return RestaurantCard(
-                        restaurant: Restaurant.restaurants[index]);
-                  }),
+            BlocBuilder<RestaurantBloc, RestaurantState>(
+              builder: (context, state) {
+                if (state is RestaurantLoading) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ));
+                } else if (state is RestaurantLoaded) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.restaurants.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return RestaurantCard(
+                              restaurant: state.restaurants[index]);
+                        }),
+                  );
+                }
+                return const Center(
+                  child: Text("Something went wrong!"),
+                );
+              },
             )
           ],
         ),

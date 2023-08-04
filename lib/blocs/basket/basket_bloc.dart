@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/models/basket_model.dart';
 import 'package:food_delivery_app/models/deliver_time_model.dart';
-import 'package:food_delivery_app/models/menu_item_model.dart' as Item;
+import 'package:food_delivery_app/models/product_model.dart';
 import 'package:food_delivery_app/models/voucher_model.dart';
 
 part 'basket_event.dart';
@@ -20,9 +20,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       : _voucherBloc = voucherBloc,
         super(BasketLoading()) {
     on<StartBasket>(startBasket);
-    on<AddItem>(addItem);
-    on<RemoveItem>(removeItem);
-    on<RemoveAllItem>(removeAllItem);
+    on<AddProduct>(addProduct);
+    on<RemoveProduct>(removeProduct);
+    on<RemoveAllProduct>(removeAllProduct);
     on<ToggleSwitch>(toggleSwitch);
     on<ApplyVoucher>(applyVoucher);
     on<SelectDeliveryTime>(selectDeliveryTime);
@@ -48,47 +48,48 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     }
   }
 
-  FutureOr<void> addItem(AddItem event, Emitter<BasketState> emit) async {
+  FutureOr<void> addProduct(AddProduct event, Emitter<BasketState> emit) async {
     if (state is BasketLoaded) {
       try {
         final BasketLoaded currentState = state as BasketLoaded;
-        final List<Item.MenuItem> updatedItems =
-            List.from(currentState.basket.items);
-        updatedItems.add(event.item);
+        final List<Product> updatedProducts =
+            List.from(currentState.basket.products);
+        updatedProducts.add(event.product);
         emit(BasketLoaded(
-            basket: currentState.basket.copyWith(items: updatedItems)));
+            basket: currentState.basket.copyWith(products: updatedProducts)));
       } catch (e) {
-        print("Error in addItem : $e");
+        print("Error in addProduct : $e");
       }
     }
   }
 
-  FutureOr<void> removeItem(RemoveItem event, Emitter<BasketState> emit) {
+  FutureOr<void> removeProduct(RemoveProduct event, Emitter<BasketState> emit) {
     if (state is BasketLoaded) {
       try {
         final BasketLoaded currentState = state as BasketLoaded;
-        final List<Item.MenuItem> updateItems =
-            List.from(currentState.basket.items);
-        updateItems.remove(event.item);
+        final List<Product> updateProducts =
+            List.from(currentState.basket.products);
+        updateProducts.remove(event.product);
         emit(BasketLoaded(
-            basket: currentState.basket.copyWith(items: updateItems)));
+            basket: currentState.basket.copyWith(products: updateProducts)));
       } catch (e) {
-        print("Error in removeItem : $e");
+        print("Error in removeProduct : $e");
       }
     }
   }
 
-  FutureOr<void> removeAllItem(RemoveAllItem event, Emitter<BasketState> emit) {
+  FutureOr<void> removeAllProduct(
+      RemoveAllProduct event, Emitter<BasketState> emit) {
     if (state is BasketLoaded) {
       try {
         final BasketLoaded currentState = state as BasketLoaded;
-        final List<Item.MenuItem> updateItems =
-            List.from(currentState.basket.items);
-        updateItems.removeWhere((item) => item == event.item);
+        final List<Product> updateProducts =
+            List.from(currentState.basket.products);
+        updateProducts.removeWhere((product) => product == event.product);
         emit(BasketLoaded(
-            basket: currentState.basket.copyWith(items: updateItems)));
+            basket: currentState.basket.copyWith(products: updateProducts)));
       } catch (e) {
-        print("Error is removeAllItem : $e");
+        print("Error is removeAllProduct : $e");
       }
     }
   }

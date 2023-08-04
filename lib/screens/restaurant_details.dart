@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +22,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Restaurant : ${restaurant.priceCategory}");
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -68,7 +69,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: restaurant.tags.length,
+                  itemCount: restaurant.categories.length,
                   itemBuilder: (context, index) {
                     return _buildMenuItems(context, restaurant, index);
                   })
@@ -84,13 +85,14 @@ Widget _buildMenuItems(BuildContext context, Restaurant restaurant, int index) {
     children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        child: Text(restaurant.tags[index],
+        child: Text(restaurant.categories[index].name,
             style: Theme.of(context).textTheme.headline3),
       ),
       Column(
-        children: restaurant.menuItems
-            .where((menuItem) => menuItem.category == restaurant.tags[index])
-            .map((menuItem) => Column(
+        children: restaurant.products
+            .where((product) =>
+                product.category == restaurant.categories[index].name)
+            .map((product) => Column(
                   children: [
                     Container(
                       color: Colors.white,
@@ -98,25 +100,30 @@ Widget _buildMenuItems(BuildContext context, Restaurant restaurant, int index) {
                       child: ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text(menuItem.name,
-                            style: Theme.of(context).textTheme.headline5),
-                        subtitle: Text(menuItem.description,
+                        title: Text(product.name,
+                            style: Theme.of(context).textTheme.headline4),
+                        subtitle: Text(product.description,
                             style: Theme.of(context).textTheme.bodyText1),
                         trailing: SizedBox(
-                          width: 85,
+                          width: 100,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("\$${menuItem.price}",
-                                  style: Theme.of(context).textTheme.bodyText1),
+                              Flexible(
+                                child: Text(
+                                  "\$${product.price}",
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
                               BlocBuilder<BasketBloc, BasketState>(
                                 builder: (context, state) {
                                   return IconButton(
                                       onPressed: () {
                                         context
                                             .read<BasketBloc>()
-                                            .add(AddItem(menuItem));
+                                            .add(AddProduct(product));
                                       },
                                       icon: Icon(Icons.add_circle,
                                           color:

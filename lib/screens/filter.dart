@@ -1,9 +1,9 @@
-// ignore_for_file: avoid_print, avoid_unnecessary_containers
+// ignore_for_file: avoid_print, avoid_unnecessary_containers, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery_app/blocs/filters/filters_bloc.dart';
-import 'package:food_delivery_app/models/models.dart';
+
 import 'package:food_delivery_app/screens/restaurant_listing.dart';
 import 'package:food_delivery_app/widgets/custom_category_filter.dart';
 import 'package:food_delivery_app/widgets/custom_price_filter.dart';
@@ -51,34 +51,11 @@ class FilterScreen extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 50),
                               backgroundColor: Theme.of(context).primaryColor),
                           onPressed: () {
-                            var categories = state.filter.categoryFilters
-                                .where((filter) => filter.value)
-                                .map((filter) => filter.category.name)
-                                .toList();
-
-                            print("Categories : $categories");
-
-                            var price = state.filter.priceFilters
-                                .where((filter) => filter.value)
-                                .map((filter) => filter.price.price)
-                                .toList();
-
-                            print("Price : $price");
-
-                            List<Restaurant> restaurants = Restaurant
-                                .restaurants
-                                .where((restaurant) => categories.any(
-                                    (category) =>
-                                        restaurant.tags.contains(category)))
-                                .where((restaurant) => price.any((price) =>
-                                    restaurant.priceCategory.contains(price)))
-                                .toList();
-
-                            print("Restaurants : $restaurants");
-
+                            print(
+                                "filteredRestaurant : ${state.filteredRestaurants}");
                             Navigator.pushNamed(
                                 context, RestaurantListingScreen.routeName,
-                                arguments: restaurants);
+                                arguments: state.filteredRestaurants);
                           },
                           child: const Text("Apply"));
                     }

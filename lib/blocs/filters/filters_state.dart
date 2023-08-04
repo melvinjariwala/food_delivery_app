@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 part of 'filters_bloc.dart';
 
 abstract class FiltersState extends Equatable {
@@ -13,9 +15,12 @@ class FiltersLoading extends FiltersState {}
 
 class FiltersLoaded extends FiltersState {
   final Filter filter;
+  final List<Restaurant>? filteredRestaurants;
 
-  const FiltersLoaded({this.filter = const Filter()});
+  const FiltersLoaded(
+      {this.filteredRestaurants = const <Restaurant>[],
+      this.filter = const Filter()});
 
   @override
-  List<Object> get props => [filter];
+  List<Object> get props => [filter, filteredRestaurants!];
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,15 +26,14 @@ class VoucherScreen extends StatelessWidget {
         leading: const BackButton(color: Colors.black),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Container(
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   backgroundColor: Theme.of(context).primaryColor),
               onPressed: () {},
               child: const Text("Apply", style: TextStyle(color: Colors.black)))
-        ])),
+        ]),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -102,7 +101,7 @@ class VoucherScreen extends StatelessWidget {
                                         color:
                                             Theme.of(context).primaryColorDark),
                               ),
-                              SizedBox(width: 20),
+                              const SizedBox(width: 20),
                               Expanded(
                                   child: Text(
                                 state.vouchers[index].code,

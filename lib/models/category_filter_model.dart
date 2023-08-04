@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:food_delivery_app/models/category_model.dart';
 
 class CategoryFilter extends Equatable {
-  final int id;
+  final String id;
   final Category category;
   final bool value;
 
   const CategoryFilter(
       {required this.id, required this.category, required this.value});
 
-  CategoryFilter copyWith({int? id, Category? category, bool? value}) {
+  CategoryFilter copyWith({String? id, Category? category, bool? value}) {
     return CategoryFilter(
         id: id ?? this.id,
         category: category ?? this.category,

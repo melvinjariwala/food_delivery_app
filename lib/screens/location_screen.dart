@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,8 +77,8 @@ class LocationScreen extends StatelessWidget {
                             create: (context) => AutocompleteBloc(
                                 placesRepository:
                                     context.read<PlacesRepository>()),
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 LocationSearchBox(),
                                 SearchBoxSuggestions()
                               ],
@@ -114,8 +114,8 @@ class LocationScreen extends StatelessWidget {
                             create: (context) => AutocompleteBloc(
                                 placesRepository:
                                     context.read<PlacesRepository>()),
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 LocationSearchBox(),
                                 SearchBoxSuggestions()
                               ],
