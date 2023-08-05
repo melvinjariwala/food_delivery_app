@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/models/models.dart';
 import 'package:food_delivery_app/models/promo_model.dart';
+import 'package:food_delivery_app/screens/location_screen.dart';
 import 'package:food_delivery_app/screens/restaurant_details.dart';
 import 'package:food_delivery_app/widgets/category_box.dart';
 import 'package:food_delivery_app/widgets/food_search_box.dart';
@@ -197,24 +199,45 @@ class CustomAppBar extends StatelessWidget with AppBarMixin {
           onPressed: () {},
           icon: const Icon(Icons.person),
           color: Colors.black),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Current Location",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(color: Colors.black),
-          ),
-          Text(
-            "Surat, Gujarat, India.",
-            style: Theme.of(context)
-                .textTheme
-                .headline6!
-                .copyWith(color: Colors.black),
-          )
-        ],
+      title: BlocBuilder<LocationBloc, LocationState>(
+        builder: (context, state) {
+          if (state is LocationLoading) {
+            print("LocationLoading");
+            return const Text("Loading");
+          }
+          if (state is LocationLoaded) {
+            print("Appbar LocationLoaded");
+            print("state.place.name : ${state.place.name}");
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, LocationScreen.routeName);
+              },
+              child: SizedBox(
+                height: 50,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Current Location",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.black),
+                    ),
+                    Text(
+                      state.place.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6!
+                          .copyWith(color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          return const Text("Something went wrong");
+        },
       ),
     );
   }

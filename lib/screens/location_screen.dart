@@ -48,7 +48,8 @@ class LocationScreen extends StatelessWidget {
                               myLocationEnabled: true,
                               //myLocationButtonEnabled: true,
                               initialCameraPosition: CameraPosition(
-                                  target: LatLng(state.lat, state.lng),
+                                  target:
+                                      LatLng(state.place.lat, state.place.lng),
                                   zoom: 18));
                         } else if (state is LocationLoading) {
                           print("Loading");
@@ -70,8 +71,8 @@ class LocationScreen extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/svgs/logo.svg', height: 50),
-                          const SizedBox(width: 10),
+                          // SvgPicture.asset('assets/svgs/logo.svg', height: 50),
+                          // const SizedBox(width: 10),
                           Expanded(
                               child: BlocProvider<AutocompleteBloc>(
                             create: (context) => AutocompleteBloc(
@@ -178,9 +179,7 @@ class _SearchBoxSuggestionsState extends State<SearchBoxSuggestions> {
     return BlocBuilder<AutocompleteBloc, AutocompleteState>(
       builder: (context, state) {
         if (state is AutocompleteLoading) {
-          return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor));
+          return const SizedBox();
         }
         if (state is AutocompleteLoaded) {
           print('AutocompleteLoaded for predictions');

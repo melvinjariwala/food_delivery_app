@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
@@ -9,11 +11,15 @@ import 'package:food_delivery_app/blocs/place/place_bloc.dart';
 import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/config/app_router.dart';
+import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
+import 'package:food_delivery_app/repositories/local_storage/local_storage_repository.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/repositories/voucher/voucher_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/location_screen.dart';
+import 'package:food_delivery_app/simple_bloc_observer.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'config/theme.dart';
 
@@ -26,7 +32,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Hive.initFlutter();
+  Hive.registerAdapter(PlaceAdapter());
+
   runApp(const MyApp());
+  // BlocOverrides.runZoned(() {
+  //   runApp(const MyApp());
+  // }, blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +57,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<RestaurantRepository>(
           create: (_) => RestaurantRepository(),
         ),
+        RepositoryProvider<LocalStorageRepository>(
+          create: (_) => LocalStorageRepository(),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
@@ -55,7 +70,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<LocationBloc>(
               create: (context) => LocationBloc(
                   placesRepository: context.read<PlacesRepository>(),
-                  geoLocationRepository: context.read<GeoLocationRepository>())
+                  geoLocationRepository: context.read<GeoLocationRepository>(),
+                  localStorageRepository:
+                      context.read<LocalStorageRepository>())
                 ..add(LoadMap())),
           BlocProvider<AutocompleteBloc>(
               create: (context) => AutocompleteBloc(
@@ -85,7 +102,7 @@ class MyApp extends StatelessWidget {
           title: 'Food Delivery',
           theme: theme(),
           onGenerateRoute: AppRouter.onGenerateRoute,
-          initialRoute: LocationScreen.routeName,
+          initialRoute: HomeScreen.routeName,
         ),
       ),
     );

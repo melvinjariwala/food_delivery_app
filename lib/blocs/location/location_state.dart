@@ -11,11 +11,10 @@ class LocationLoading extends LocationState {}
 
 class LocationLoaded extends LocationState {
   final GoogleMapController? controller;
-  final double lat;
-  final double lng;
+  final Place place;
 
-  const LocationLoaded({this.controller, required this.lat, required this.lng});
+  const LocationLoaded({this.controller, required this.place});
 
   @override
-  List<Object> get props => [controller!, lat, lng];
+  List<Object> get props => [controller!, place];
 }
