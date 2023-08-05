@@ -8,14 +8,16 @@ class GeoLocationRepository extends BaseGeoloacationRepository {
 
   @override
   Future<Position> getCurrentLocation() async {
-    try {
-      final Position position = await Geolocator.getCurrentPosition(
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error("Location not available");
+    } else {
+      return await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      print('Current position : $position');
-      return position;
-    } catch (e) {
-      print("Error fetching current location : $e");
-      rethrow;
     }
   }
 }

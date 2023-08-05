@@ -50,249 +50,149 @@ class BasketScreen extends StatelessWidget {
                 const Text("Checkout", style: TextStyle(color: Colors.black)),
           ),
         )),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Cutlery",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(color: Theme.of(context).primaryColorDark),
-              ),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(9.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text("Add Cutlery?",
-                          style: Theme.of(context).textTheme.headline6),
-                    ),
-                    BlocBuilder<BasketBloc, BasketState>(
-                      builder: (context, state) {
-                        if (state is BasketLoading) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          );
-                        } else if (state is BasketLoaded) {
-                          return SizedBox(
-                            width: 100,
-                            child: SwitchListTile(
-                              activeColor: Theme.of(context).primaryColor,
-                              dense: false,
-                              value: state.basket.cutlery,
-                              onChanged: (bool? newValue) {
-                                context
-                                    .read<BasketBloc>()
-                                    .add(const ToggleSwitch());
-                              },
-                            ),
-                          );
-                        }
-                        return const Center(
-                            child: Text("Something went wrong!"));
-                      },
-                    )
-                  ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Cutlery",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Theme.of(context).primaryColorDark),
                 ),
-              ),
-              Text(
-                "Items",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(color: Theme.of(context).primaryColorDark),
-              ),
-              BlocBuilder<BasketBloc, BasketState>(
-                builder: (context, state) {
-                  if (state is BasketLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(9.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text("Add Cutlery?",
+                            style: Theme.of(context).textTheme.headline6),
                       ),
-                    );
-                  } else if (state is BasketLoaded) {
-                    print("State : Basket Loaded");
-                    print("${state.basket.products.length}");
-                    return state.basket.products.isEmpty
-                        ? Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.only(top: 5.0),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 10.0),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("No items in the basket.",
-                                    textAlign: TextAlign.left,
-                                    style:
-                                        Theme.of(context).textTheme.headline6)
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.basket
-                                .itemQuantity(state.basket.products)
-                                .keys
-                                .length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: double.infinity,
-                                margin: const EdgeInsets.only(top: 5),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0, vertical: 10.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(9.0)),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                        "${state.basket.itemQuantity(state.basket.products).entries.elementAt(index).value}x",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorDark)),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Text(
-                                          "${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).name}",
+                      BlocBuilder<BasketBloc, BasketState>(
+                        builder: (context, state) {
+                          if (state is BasketLoading) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            );
+                          } else if (state is BasketLoaded) {
+                            return SizedBox(
+                              width: 100,
+                              child: SwitchListTile(
+                                activeColor: Theme.of(context).primaryColor,
+                                dense: false,
+                                value: state.basket.cutlery,
+                                onChanged: (bool? newValue) {
+                                  context
+                                      .read<BasketBloc>()
+                                      .add(const ToggleSwitch());
+                                },
+                              ),
+                            );
+                          }
+                          return const Center(
+                              child: Text("Something went wrong!"));
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Text(
+                  "Items",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: Theme.of(context).primaryColorDark),
+                ),
+                BlocBuilder<BasketBloc, BasketState>(
+                  builder: (context, state) {
+                    if (state is BasketLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      );
+                    } else if (state is BasketLoaded) {
+                      print("State : Basket Loaded");
+                      print("${state.basket.products.length}");
+                      return state.basket.products.isEmpty
+                          ? Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.only(top: 5.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 10.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("No items in the basket.",
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          Theme.of(context).textTheme.headline6)
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.basket
+                                  .itemQuantity(state.basket.products)
+                                  .keys
+                                  .length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.only(top: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(9.0)),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                          "${state.basket.itemQuantity(state.basket.products).entries.elementAt(index).value}x",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark)),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: Text(
+                                            "${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).name}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6),
+                                      ),
+                                      Text(
+                                          "\$${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).price}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6),
-                                    ),
-                                    Text(
-                                        "\$${state.basket.itemQuantity(state.basket.products).keys.elementAt(index).price}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6),
-                                  ],
-                                ),
-                              );
-                            });
-                  }
-                  return const Center(child: Text("Something went wrong!"));
-                },
-              ),
-              Container(
-                width: double.infinity,
-                height: 100,
-                margin: const EdgeInsets.only(top: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(9.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset('assets/svgs/delivery_time.svg'),
-                    BlocBuilder<BasketBloc, BasketState>(
-                      builder: (context, state) {
-                        if (state is BasketLoaded) {
-                          return (state.basket.deliveryTime == null)
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    Text("Delivery in 15 minutes",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(context,
-                                              DeliveryTimeScreen.routeName);
-                                        },
-                                        child: Text("Change",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark)))
-                                  ],
-                                )
-                              : Text(
-                                  'Delivery at ${state.basket.deliveryTime!.value}',
-                                  style: Theme.of(context).textTheme.headline6);
-                        }
-                        return const Center(
-                            child: Text("Something went wrong!"));
-                      },
-                    )
-                  ],
+                                    ],
+                                  ),
+                                );
+                              });
+                    }
+                    return const Center(child: Text("Something went wrong!"));
+                  },
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 100,
-                margin: const EdgeInsets.only(top: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(9.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<BasketBloc, BasketState>(
-                      builder: (context, state) {
-                        if (state is BasketLoaded) {
-                          return state.basket.voucher == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    Text("Do you have a voucher?",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, VoucherScreen.routeName);
-                                        },
-                                        child: Text("Apply",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark))),
-                                  ],
-                                )
-                              : const Center(
-                                  child: Text("Your voucher is applied!"));
-                        }
-                        return Center(
-                            child: Text("Something went wrong!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .primaryColorDark)));
-                      },
-                    ),
-                    SvgPicture.asset('assets/svgs/delivery_time.svg'),
-                  ],
-                ),
-              ),
-              Container(
+                Container(
                   width: double.infinity,
                   height: 100,
                   margin: const EdgeInsets.only(top: 5),
@@ -300,66 +200,179 @@ class BasketScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(9.0)),
-                  child: BlocBuilder<BasketBloc, BasketState>(
-                    builder: (context, state) {
-                      if (state is BasketLoading) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor));
-                      } else if (state is BasketLoaded) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Subtotal",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset('assets/svgs/delivery_time.svg'),
+                      BlocBuilder<BasketBloc, BasketState>(
+                        builder: (context, state) {
+                          if (state is BasketLoaded) {
+                            return (state.basket.deliveryTime == null)
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      Text("Delivery in 15 minutes",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(context,
+                                                DeliveryTimeScreen.routeName);
+                                          },
+                                          child: Text("Change",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark)))
+                                    ],
+                                  )
+                                : Text(
+                                    'Delivery at ${state.basket.deliveryTime!.value}',
                                     style:
-                                        Theme.of(context).textTheme.headline6),
-                                Text("\$${state.basket.subtotal}",
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Delivery Fee",
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                                Text("\$2.99",
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Total",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline5!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColorDark)),
-                                Text("\$${state.basket.totalToString}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline5!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColorDark)),
-                              ],
-                            )
-                          ],
-                        );
-                      }
-                      return const Center(child: Text("Something went wrong!"));
-                    },
-                  ))
-            ],
+                                        Theme.of(context).textTheme.headline6);
+                          }
+                          return const Center(
+                              child: Text("Something went wrong!"));
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 100,
+                  margin: const EdgeInsets.only(top: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(9.0)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BlocBuilder<BasketBloc, BasketState>(
+                        builder: (context, state) {
+                          if (state is BasketLoaded) {
+                            return state.basket.voucher == null
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      Text("Do you have a voucher?",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(context,
+                                                VoucherScreen.routeName);
+                                          },
+                                          child: Text("Apply",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark))),
+                                    ],
+                                  )
+                                : const Center(
+                                    child: Text("Your voucher is applied!"));
+                          }
+                          return Center(
+                              child: Text("Something went wrong!",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .primaryColorDark)));
+                        },
+                      ),
+                      SvgPicture.asset('assets/svgs/delivery_time.svg'),
+                    ],
+                  ),
+                ),
+                Container(
+                    width: double.infinity,
+                    height: 100,
+                    margin: const EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(9.0)),
+                    child: BlocBuilder<BasketBloc, BasketState>(
+                      builder: (context, state) {
+                        if (state is BasketLoading) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                                  color: Theme.of(context).primaryColor));
+                        } else if (state is BasketLoaded) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Subtotal",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
+                                  Text("\$${state.basket.subtotal}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
+                                ],
+                              ),
+                              const SizedBox(height: 5.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Delivery Fee",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
+                                  Text("\$2.99",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
+                                ],
+                              ),
+                              const SizedBox(height: 5.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Total",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark)),
+                                  Text("\$${state.basket.totalToString}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark)),
+                                ],
+                              )
+                            ],
+                          );
+                        }
+                        return const Center(
+                            child: Text("Something went wrong!"));
+                      },
+                    ))
+              ],
+            ),
           ),
         ));
   }

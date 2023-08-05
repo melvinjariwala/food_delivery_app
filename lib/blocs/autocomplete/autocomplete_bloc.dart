@@ -17,6 +17,7 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
       : _placesRepository = placesRepository,
         super(AutocompleteLoading()) {
     on<LoadAutocomplete>(loadAutocomplete);
+    on<ClearAutocomplete>(clearAutocomplete);
   }
 
   FutureOr<void> loadAutocomplete(
@@ -26,7 +27,12 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
           await _placesRepository.getAutocomplete(event.searchInput);
       emit(AutocompleteLoaded(autocomplete: autocomplete));
     } catch (e) {
-      print("Error occured in bloc : $e");
+      print("Error occured in AutocompleteBloc : $e");
     }
+  }
+
+  FutureOr<void> clearAutocomplete(
+      ClearAutocomplete event, Emitter<AutocompleteState> emit) async {
+    emit(AutocompleteLoaded(autocomplete: List.empty()));
   }
 }

@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
-import 'package:food_delivery_app/blocs/geolocation/geolocation_bloc.dart';
+import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/place/place_bloc.dart';
-import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
+import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/widgets/location_search_box.dart';
-//import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 //import 'package:flutter/src/widgets/container.dart';
@@ -36,21 +35,22 @@ class LocationScreen extends StatelessWidget {
                 SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: double.maxFinite,
-                    child: BlocBuilder<GeolocationBloc, GeolocationState>(
+                    child: BlocBuilder<LocationBloc, LocationState>(
                       builder: (context, state) {
-                        if (state is GeolocationLoaded) {
+                        if (state is LocationLoaded) {
                           print('Loaded');
                           return GoogleMap(
-                              onMapCreated: ((controller) {
-                                context.read<GeolocationBloc>().add(
-                                    LoadGeolocation(controller: controller));
+                              onMapCreated: ((GoogleMapController controller) {
+                                context
+                                    .read<LocationBloc>()
+                                    .add(LoadMap(controller: controller));
                               }),
                               myLocationEnabled: true,
                               //myLocationButtonEnabled: true,
                               initialCameraPosition: CameraPosition(
                                   target: LatLng(state.lat, state.lng),
                                   zoom: 18));
-                        } else if (state is GeolocationLoading) {
+                        } else if (state is LocationLoading) {
                           print("Loading");
                           return Center(
                             child: CircularProgressIndicator(
@@ -70,7 +70,7 @@ class LocationScreen extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/logo.svg', height: 50),
+                          SvgPicture.asset('assets/svgs/logo.svg', height: 50),
                           const SizedBox(width: 10),
                           Expanded(
                               child: BlocProvider<AutocompleteBloc>(
@@ -107,8 +107,8 @@ class LocationScreen extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
-                          SvgPicture.asset('assets/logo.svg', height: 50),
-                          const SizedBox(width: 10),
+                          // SvgPicture.asset('assets/logo.svg', height: 50),
+                          // const SizedBox(width: 10),
                           Expanded(
                               child: BlocProvider<AutocompleteBloc>(
                             create: (context) => AutocompleteBloc(
@@ -149,7 +149,9 @@ class SaveButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 90, right: 90),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, HomeScreen.routeName);
+            },
             style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor),
             child: Text(
@@ -175,12 +177,10 @@ class _SearchBoxSuggestionsState extends State<SearchBoxSuggestions> {
   Widget build(BuildContext context) {
     return BlocBuilder<AutocompleteBloc, AutocompleteState>(
       builder: (context, state) {
-        context
-            .read<AutocompleteBloc>()
-            .add(LoadAutocomplete(searchInput: state.props.toString()));
         if (state is AutocompleteLoading) {
-          print('AutocompleteLoading for predictions');
-          return const SizedBox();
+          return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor));
         }
         if (state is AutocompleteLoaded) {
           print('AutocompleteLoaded for predictions');
@@ -200,8 +200,9 @@ class _SearchBoxSuggestionsState extends State<SearchBoxSuggestions> {
                             .headline6!
                             .copyWith(color: Colors.white)),
                     onTap: () {
-                      Place place = state.autocomplete[index].placeId as Place;
-                      context.read<PlaceBloc>().add(LoadPlace(placeId: place));
+                      context.read<LocationBloc>().add(SearchLocation(
+                          placeId: state.autocomplete[index].placeId));
+                      context.read<AutocompleteBloc>().add(ClearAutocomplete());
                     },
                   ),
                 );

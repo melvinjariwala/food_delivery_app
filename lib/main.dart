@@ -4,6 +4,7 @@ import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
 import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
 import 'package:food_delivery_app/blocs/filters/filters_bloc.dart';
 import 'package:food_delivery_app/blocs/geolocation/geolocation_bloc.dart';
+import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/place/place_bloc.dart';
 import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:food_delivery_app/repositories/geolocation/geolocation_repositor
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/repositories/voucher/voucher_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/location_screen.dart';
 
 import 'config/theme.dart';
 
@@ -50,6 +52,11 @@ class MyApp extends StatelessWidget {
               create: (context) => GeolocationBloc(
                   geoLocationRepository: context.read<GeoLocationRepository>())
                 ..add(const LoadGeolocation())),
+          BlocProvider<LocationBloc>(
+              create: (context) => LocationBloc(
+                  placesRepository: context.read<PlacesRepository>(),
+                  geoLocationRepository: context.read<GeoLocationRepository>())
+                ..add(LoadMap())),
           BlocProvider<AutocompleteBloc>(
               create: (context) => AutocompleteBloc(
                   placesRepository: context.read<PlacesRepository>())
@@ -78,7 +85,7 @@ class MyApp extends StatelessWidget {
           title: 'Food Delivery',
           theme: theme(),
           onGenerateRoute: AppRouter.onGenerateRoute,
-          initialRoute: HomeScreen.routeName,
+          initialRoute: LocationScreen.routeName,
         ),
       ),
     );
