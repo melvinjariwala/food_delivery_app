@@ -19,7 +19,7 @@ class LoadMap extends LocationEvent {
 class SearchLocation extends LocationEvent {
   final String placeId;
 
-  SearchLocation({required this.placeId});
+  const SearchLocation({required this.placeId});
 
   @override
   List<Object> get props => [placeId];

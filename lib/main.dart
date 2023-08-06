@@ -17,8 +17,6 @@ import 'package:food_delivery_app/repositories/local_storage/local_storage_repos
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/repositories/voucher/voucher_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
-import 'package:food_delivery_app/screens/location_screen.dart';
-import 'package:food_delivery_app/simple_bloc_observer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'config/theme.dart';
@@ -73,7 +71,7 @@ class MyApp extends StatelessWidget {
                   geoLocationRepository: context.read<GeoLocationRepository>(),
                   localStorageRepository:
                       context.read<LocalStorageRepository>())
-                ..add(LoadMap())),
+                ..add(const LoadMap())),
           BlocProvider<AutocompleteBloc>(
               create: (context) => AutocompleteBloc(
                   placesRepository: context.read<PlacesRepository>())

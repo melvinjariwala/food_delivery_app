@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
 import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/place/place_bloc.dart';
+import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
+import 'package:food_delivery_app/models/restaurant_model.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/restaurant_details.dart';
 import 'package:food_delivery_app/widgets/location_search_box.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -39,12 +41,30 @@ class LocationScreen extends StatelessWidget {
                       builder: (context, state) {
                         if (state is LocationLoaded) {
                           print('Loaded');
+                          List<Restaurant> restaurants = (context
+                                  .read<RestaurantBloc>()
+                                  .state as RestaurantLoaded)
+                              .restaurants;
                           return GoogleMap(
                               onMapCreated: ((GoogleMapController controller) {
                                 context
                                     .read<LocationBloc>()
                                     .add(LoadMap(controller: controller));
                               }),
+                              markers: {
+                                Marker(
+                                    markerId: MarkerId("marker_1"),
+                                    infoWindow: InfoWindow(
+                                        title: restaurants[0].name,
+                                        snippet: restaurants[0].description,
+                                        onTap: () {
+                                          Navigator.pushNamed(context,
+                                              RestaurantDetailsScreen.routeName,
+                                              arguments: restaurants[0]);
+                                        }),
+                                    position: LatLng(restaurants[0].address.lat,
+                                        restaurants[0].address.lng))
+                              },
                               myLocationEnabled: true,
                               //myLocationButtonEnabled: true,
                               initialCameraPosition: CameraPosition(

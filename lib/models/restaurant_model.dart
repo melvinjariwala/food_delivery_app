@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery_app/models/category_model.dart';
 import 'package:food_delivery_app/models/opening_hour_model.dart';
+import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/models/product_model.dart';
 
 class Restaurant extends Equatable {
@@ -19,6 +20,7 @@ class Restaurant extends Equatable {
   final String priceCategory;
   final double deliveryFee;
   final double distance;
+  final Place address;
 
   const Restaurant(
       {required this.id,
@@ -29,6 +31,7 @@ class Restaurant extends Equatable {
       required this.categories,
       required this.products,
       required this.openingHours,
+      this.address = const Place(lat: 21.1474852, lng: 72.7649147),
       this.deliveryTime = 15,
       this.priceCategory = '\$',
       this.deliveryFee = 2.99,
@@ -47,7 +50,8 @@ class Restaurant extends Equatable {
         deliveryTime,
         priceCategory,
         deliveryFee,
-        distance
+        distance,
+        address
       ];
 
   factory Restaurant.fromSnapshot(DocumentSnapshot snap) {
@@ -68,6 +72,11 @@ class Restaurant extends Equatable {
         }).toList(),
         openingHours: (snap['openingHours'] as List).map((openingHour) {
           return OpeningHours.fromSnapshot(openingHour);
-        }).toList());
+        }).toList(),
+        address: const Place(
+            place_id: "1",
+            name: "Aristocratic Tales",
+            lat: 21.1474852,
+            lng: 72.7649147));
   }
 }

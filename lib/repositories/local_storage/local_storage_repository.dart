@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable, prefer_is_empty
+
 import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/repositories/local_storage/base_local_storage_repository.dart';
 import 'package:hive/hive.dart';
@@ -8,7 +10,7 @@ class LocalStorageRepository extends BaseLocalStorageRepository {
 
   @override
   Future<void> addPlace(Box box, Place place) async {
-    await box.put(place.placeId, place);
+    await box.put(place.place_id, place);
   }
 
   @override
