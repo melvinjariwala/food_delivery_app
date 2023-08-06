@@ -10,7 +10,7 @@ class LocalStorageRepository extends BaseLocalStorageRepository {
 
   @override
   Future<void> addPlace(Box box, Place place) async {
-    await box.put(place.place_id, place);
+    await box.put(place.placeId, place);
   }
 
   @override

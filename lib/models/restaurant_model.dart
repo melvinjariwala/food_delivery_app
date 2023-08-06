@@ -74,7 +74,7 @@ class Restaurant extends Equatable {
           return OpeningHours.fromSnapshot(openingHour);
         }).toList(),
         address: const Place(
-            place_id: "1",
+            placeId: "1",
             name: "Aristocratic Tales",
             lat: 21.1474852,
             lng: 72.7649147));

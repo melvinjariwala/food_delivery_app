@@ -6,7 +6,7 @@ part 'place_model.g.dart';
 @HiveType(typeId: 0)
 class Place extends Equatable {
   @HiveField(0)
-  final String place_id;
+  final String placeId;
   @HiveField(1)
   final String name;
   @HiveField(2)
@@ -15,19 +15,19 @@ class Place extends Equatable {
   final double lng;
 
   const Place(
-      {this.place_id = '',
+      {this.placeId = '',
       this.name = '',
       required this.lat,
       required this.lng});
 
   factory Place.fromJSON(Map<String, dynamic> json) {
     return Place(
-        place_id: json["place_id"],
+        placeId: json["placeId"],
         name: json["name"],
         lat: json["geometry"]["location"]["lat"],
         lng: json["geometry"]["location"]["lng"]);
   }
 
   @override
-  List<Object?> get props => [place_id, name, lat, lng];
+  List<Object?> get props => [placeId, name, lat, lng];
 }

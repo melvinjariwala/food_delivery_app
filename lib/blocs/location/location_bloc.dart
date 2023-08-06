@@ -47,7 +47,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
       place = Place(lat: position.latitude, lng: position.longitude);
     }
-    List<Restaurant> restaurants = await _getNearbyRestaurants(place);
+    List<Restaurant> restaurants =
+        await _restaurantRepository.getNearbyRestaurants(place).first;
     emit(LocationLoaded(
         controller: event.controller, place: place, restaurants: restaurants));
   }
@@ -63,28 +64,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     state.controller!
         .animateCamera(CameraUpdate.newLatLng(LatLng(place.lat, place.lng)));
-    List<Restaurant> restaurants = await _getNearbyRestaurants(place);
+    List<Restaurant> restaurants =
+        await _restaurantRepository.getNearbyRestaurants(place).first;
     emit(LocationLoaded(
         controller: state.controller, place: place, restaurants: restaurants));
-  }
-
-  _getNearbyRestaurants(Place place) async {
-    List<Restaurant> restaurants =
-        await _restaurantRepository.getRestaurant().first;
-    return restaurants
-        .where((restaurant) =>
-            _getRestaurantDistance(restaurant.address, place) <= 15)
-        .toList();
-  }
-
-  _getRestaurantDistance(Place address, Place place) {
-    GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
-    var distance = geolocatorPlatform.distanceBetween(
-            address.lat.toDouble(),
-            address.lng.toDouble(),
-            place.lat.toDouble(),
-            place.lng.toDouble()) ~/
-        1000;
-    return distance;
   }
 }

@@ -17,7 +17,7 @@ class PlaceAdapter extends TypeAdapter<Place> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Place(
-      place_id: fields[0] as String,
+      placeId: fields[0] as String,
       name: fields[1] as String,
       lat: fields[2] as double,
       lng: fields[3] as double,
@@ -29,7 +29,7 @@ class PlaceAdapter extends TypeAdapter<Place> {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.place_id)
+      ..write(obj.placeId)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
