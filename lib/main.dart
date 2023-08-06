@@ -82,7 +82,8 @@ class MyApp extends StatelessWidget {
                   placesRepository: context.read<PlacesRepository>())),
           BlocProvider(
               create: (context) => RestaurantBloc(
-                  restaurantRepository: context.read<RestaurantRepository>())),
+                  restaurantRepository: context.read<RestaurantRepository>(),
+                  locationBloc: context.read<LocationBloc>())),
           BlocProvider<FiltersBloc>(
               create: (context) => FiltersBloc(
                   restaurantBloc: BlocProvider.of<RestaurantBloc>(context))

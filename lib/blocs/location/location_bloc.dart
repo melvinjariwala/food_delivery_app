@@ -48,7 +48,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       place = Place(lat: position.latitude, lng: position.longitude);
     }
     List<Restaurant> restaurants = await _getNearbyRestaurants(place);
-    print("loadMap restaurants = $restaurants");
     emit(LocationLoaded(
         controller: event.controller, place: place, restaurants: restaurants));
   }
@@ -72,8 +71,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   _getNearbyRestaurants(Place place) async {
     List<Restaurant> restaurants =
         await _restaurantRepository.getRestaurant().first;
-    print(
-        "_getNearbyRestaurants + ${restaurants.where((restaurant) => _getRestaurantDistance(restaurant.address, place) <= 20).toList()}");
     return restaurants
         .where((restaurant) =>
             _getRestaurantDistance(restaurant.address, place) <= 15)
@@ -88,7 +85,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             place.lat.toDouble(),
             place.lng.toDouble()) ~/
         1000;
-    print("distance = $distance");
     return distance;
   }
 }
