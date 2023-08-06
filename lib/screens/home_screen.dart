@@ -203,7 +203,28 @@ class CustomAppBar extends StatelessWidget with AppBarMixin {
         builder: (context, state) {
           if (state is LocationLoading) {
             print("LocationLoading");
-            return const Text("Loading");
+            return SizedBox(
+              height: 50,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Current Location",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Colors.black),
+                  ),
+                  Text(
+                    "Loading...",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(color: Colors.black),
+                  )
+                ],
+              ),
+            );
           }
           if (state is LocationLoaded) {
             print("Appbar LocationLoaded");

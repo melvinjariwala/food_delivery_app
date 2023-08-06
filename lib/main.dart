@@ -70,7 +70,8 @@ class MyApp extends StatelessWidget {
                   placesRepository: context.read<PlacesRepository>(),
                   geoLocationRepository: context.read<GeoLocationRepository>(),
                   localStorageRepository:
-                      context.read<LocalStorageRepository>())
+                      context.read<LocalStorageRepository>(),
+                  restaurantRepository: context.read<RestaurantRepository>())
                 ..add(const LoadMap())),
           BlocProvider<AutocompleteBloc>(
               create: (context) => AutocompleteBloc(
