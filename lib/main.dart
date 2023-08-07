@@ -13,7 +13,12 @@ import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/config/app_router.dart';
 import 'package:food_delivery_app/datasources/local_datasource.dart';
 import 'package:food_delivery_app/datasources/places_api.dart';
+import 'package:food_delivery_app/models/basket_model.dart';
+import 'package:food_delivery_app/models/deliver_time_model.dart';
 import 'package:food_delivery_app/models/place_model.dart';
+import 'package:food_delivery_app/models/product_model.dart';
+import 'package:food_delivery_app/models/voucher_model.dart';
+import 'package:food_delivery_app/repositories/basket/basket_repository.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
 import 'package:food_delivery_app/repositories/local_storage/local_storage_repository.dart';
 import 'package:food_delivery_app/repositories/location/location_repository.dart';
@@ -34,7 +39,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Hive.initFlutter();
-  Hive.registerAdapter(PlaceAdapter());
+  Hive
+    ..registerAdapter(PlaceAdapter())
+    ..registerAdapter(ProductAdapter())
+    ..registerAdapter(VoucherAdapter())
+    ..registerAdapter(DeliveryTimeAdapter())
+    ..registerAdapter(BasketAdapter());
 
   runApp(const MyApp());
   // BlocOverrides.runZoned(() {
@@ -63,7 +73,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<LocationRepository>(
             create: (_) => LocationRepository(
-                localDatasource: LocalDatasource(), placesAPI: PlacesAPI()))
+                localDatasource: LocalDatasource(), placesAPI: PlacesAPI())),
+        RepositoryProvider<BasketRepository>(
+            create: (_) => BasketRepository(localDatasource: LocalDatasource()))
       ],
       child: MultiBlocProvider(
         providers: [
@@ -97,9 +109,10 @@ class MyApp extends StatelessWidget {
                   VoucherBloc(voucherRespository: VoucherRespository())
                     ..add(LoadVouchers())),
           BlocProvider<BasketBloc>(
-              create: (context) =>
-                  BasketBloc(voucherBloc: BlocProvider.of<VoucherBloc>(context))
-                    ..add(StartBasket())),
+              create: (context) => BasketBloc(
+                  voucherBloc: BlocProvider.of<VoucherBloc>(context),
+                  basketRepository: context.read<BasketRepository>())
+                ..add(StartBasket())),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

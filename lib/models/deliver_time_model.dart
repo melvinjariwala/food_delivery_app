@@ -1,8 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
+part 'deliver_time_model.g.dart';
+
+@HiveType(typeId: 4)
 class DeliveryTime extends Equatable {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String value;
+  @HiveField(2)
   final DateTime time;
 
   const DeliveryTime(

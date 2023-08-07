@@ -9,6 +9,7 @@ import 'package:food_delivery_app/models/basket_model.dart';
 import 'package:food_delivery_app/models/deliver_time_model.dart';
 import 'package:food_delivery_app/models/product_model.dart';
 import 'package:food_delivery_app/models/voucher_model.dart';
+import 'package:food_delivery_app/repositories/basket/basket_repository.dart';
 
 part 'basket_event.dart';
 part 'basket_state.dart';
@@ -16,8 +17,12 @@ part 'basket_state.dart';
 class BasketBloc extends Bloc<BasketEvent, BasketState> {
   final VoucherBloc _voucherBloc;
   late StreamSubscription _voucherSubscription;
-  BasketBloc({required VoucherBloc voucherBloc})
+  final BasketRepository _basketRepository;
+  BasketBloc(
+      {required VoucherBloc voucherBloc,
+      required BasketRepository basketRepository})
       : _voucherBloc = voucherBloc,
+        _basketRepository = basketRepository,
         super(BasketLoading()) {
     on<StartBasket>(startBasket);
     on<AddProduct>(addProduct);
@@ -36,27 +41,26 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   FutureOr<void> startBasket(
       StartBasket event, Emitter<BasketState> emit) async {
+    Basket basket = await _basketRepository.getBasket();
     emit(BasketLoading());
 
     try {
       print("About to emit BasketLoaded");
       await Future<void>.delayed(const Duration(seconds: 1));
-
-      emit(const BasketLoaded(basket: Basket()));
+      emit(BasketLoaded(basket: basket));
     } catch (e) {
       print("Error in startBasket : $e");
     }
   }
 
   FutureOr<void> addProduct(AddProduct event, Emitter<BasketState> emit) async {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        final List<Product> updatedProducts =
-            List.from(currentState.basket.products);
-        updatedProducts.add(event.product);
-        emit(BasketLoaded(
-            basket: currentState.basket.copyWith(products: updatedProducts)));
+        Basket basket = state.basket.copyWith(
+            products: List.from(state.basket.products)..add(event.product));
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error in addProduct : $e");
       }
@@ -64,14 +68,13 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   FutureOr<void> removeProduct(RemoveProduct event, Emitter<BasketState> emit) {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        final List<Product> updateProducts =
-            List.from(currentState.basket.products);
-        updateProducts.remove(event.product);
-        emit(BasketLoaded(
-            basket: currentState.basket.copyWith(products: updateProducts)));
+        Basket basket = state.basket.copyWith(
+            products: List.from(state.basket.products)..add(event.product));
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error in removeProduct : $e");
       }
@@ -80,14 +83,14 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   FutureOr<void> removeAllProduct(
       RemoveAllProduct event, Emitter<BasketState> emit) {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        final List<Product> updateProducts =
-            List.from(currentState.basket.products);
-        updateProducts.removeWhere((product) => product == event.product);
-        emit(BasketLoaded(
-            basket: currentState.basket.copyWith(products: updateProducts)));
+        Basket basket = state.basket.copyWith(
+            products: List.from(state.basket.products)
+              ..removeWhere((product) => product == event.product));
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error is removeAllProduct : $e");
       }
@@ -95,12 +98,12 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   FutureOr<void> toggleSwitch(ToggleSwitch event, Emitter<BasketState> emit) {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        emit(BasketLoaded(
-            basket: currentState.basket
-                .copyWith(cutlery: !currentState.basket.cutlery)));
+        Basket basket = state.basket.copyWith(cutlery: !state.basket.cutlery);
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error is toggleSwitch : $e");
       }
@@ -108,11 +111,12 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   FutureOr<void> applyVoucher(ApplyVoucher event, Emitter<BasketState> emit) {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        emit(BasketLoaded(
-            basket: currentState.basket.copyWith(voucher: event.voucher)));
+        Basket basket = state.basket.copyWith(voucher: event.voucher);
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error in addVoucher : $e");
       }
@@ -121,12 +125,12 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   FutureOr<void> selectDeliveryTime(
       SelectDeliveryTime event, Emitter<BasketState> emit) {
+    final state = this.state;
     if (state is BasketLoaded) {
       try {
-        final BasketLoaded currentState = state as BasketLoaded;
-        emit(BasketLoaded(
-            basket: currentState.basket
-                .copyWith(deliveryTime: event.deliveryTime)));
+        Basket basket = state.basket.copyWith(deliveryTime: event.deliveryTime);
+        _basketRepository.saveBasket(basket);
+        emit(BasketLoaded(basket: basket));
       } catch (e) {
         print("Error in selectDeliveryTime : $e");
       }
