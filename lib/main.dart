@@ -11,9 +11,12 @@ import 'package:food_delivery_app/blocs/place/place_bloc.dart';
 import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/blocs/voucher/voucher_bloc.dart';
 import 'package:food_delivery_app/config/app_router.dart';
+import 'package:food_delivery_app/datasources/local_datasource.dart';
+import 'package:food_delivery_app/datasources/places_api.dart';
 import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
 import 'package:food_delivery_app/repositories/local_storage/local_storage_repository.dart';
+import 'package:food_delivery_app/repositories/location/location_repository.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/repositories/voucher/voucher_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
@@ -57,7 +60,10 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<LocalStorageRepository>(
           create: (_) => LocalStorageRepository(),
-        )
+        ),
+        RepositoryProvider<LocationRepository>(
+            create: (_) => LocationRepository(
+                localDatasource: LocalDatasource(), placesAPI: PlacesAPI()))
       ],
       child: MultiBlocProvider(
         providers: [
@@ -67,15 +73,13 @@ class MyApp extends StatelessWidget {
                 ..add(const LoadGeolocation())),
           BlocProvider<LocationBloc>(
               create: (context) => LocationBloc(
-                  placesRepository: context.read<PlacesRepository>(),
                   geoLocationRepository: context.read<GeoLocationRepository>(),
-                  localStorageRepository:
-                      context.read<LocalStorageRepository>(),
-                  restaurantRepository: context.read<RestaurantRepository>())
+                  restaurantRepository: context.read<RestaurantRepository>(),
+                  locationRepository: context.read<LocationRepository>())
                 ..add(const LoadMap())),
           BlocProvider<AutocompleteBloc>(
               create: (context) => AutocompleteBloc(
-                  placesRepository: context.read<PlacesRepository>())
+                  locationRepository: context.read<LocationRepository>())
                 ..add(const LoadAutocomplete())),
           BlocProvider<PlaceBloc>(
               create: (context) => PlaceBloc(

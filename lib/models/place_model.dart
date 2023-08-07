@@ -20,12 +20,26 @@ class Place extends Equatable {
       required this.lat,
       required this.lng});
 
+  static const empty = Place(lat: 0, lng: 0);
+
   factory Place.fromJSON(Map<String, dynamic> json) {
-    return Place(
-        placeId: json["placeId"],
-        name: json["name"],
-        lat: json["geometry"]["location"]["lat"],
-        lng: json["geometry"]["location"]["lng"]);
+    if (!json.keys.contains('name')) {
+      return Place(
+          placeId: json['place_id'], name: json['description'], lat: 0, lng: 0);
+    }
+    if (json.keys.contains('place_id')) {
+      return Place(
+          placeId: json["placeId"],
+          name: json["name"],
+          lat: json["geometry"]["location"]["lat"],
+          lng: json["geometry"]["location"]["lng"]);
+    } else {
+      return Place(
+          placeId: json['place_id'],
+          name: json['name'],
+          lat: json['lat'],
+          lng: json['lng']);
+    }
   }
 
   @override

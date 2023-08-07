@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
 import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/place/place_bloc.dart';
-import 'package:food_delivery_app/repositories/places/places_repository.dart';
+import 'package:food_delivery_app/repositories/location/location_repository.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/restaurant_details.dart';
 import 'package:food_delivery_app/widgets/location_search_box.dart';
@@ -94,8 +94,8 @@ class LocationScreen extends StatelessWidget {
                           Expanded(
                               child: BlocProvider<AutocompleteBloc>(
                             create: (context) => AutocompleteBloc(
-                                placesRepository:
-                                    context.read<PlacesRepository>()),
+                                locationRepository:
+                                    context.read<LocationRepository>()),
                             child: const Column(
                               children: [
                                 LocationSearchBox(),
@@ -131,8 +131,8 @@ class LocationScreen extends StatelessWidget {
                           Expanded(
                               child: BlocProvider<AutocompleteBloc>(
                             create: (context) => AutocompleteBloc(
-                                placesRepository:
-                                    context.read<PlacesRepository>()),
+                                locationRepository:
+                                    context.read<LocationRepository>()),
                             child: const Column(
                               children: [
                                 LocationSearchBox(),
@@ -211,7 +211,7 @@ class _SearchBoxSuggestionsState extends State<SearchBoxSuggestions> {
                 return Container(
                   color: Colors.black.withOpacity(0.6),
                   child: ListTile(
-                    title: Text(state.autocomplete[index].description,
+                    title: Text(state.autocomplete[index].name,
                         style: Theme.of(context)
                             .textTheme
                             .headline6!

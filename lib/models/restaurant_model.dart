@@ -56,27 +56,29 @@ class Restaurant extends Equatable {
 
   factory Restaurant.fromSnapshot(DocumentSnapshot snap) {
     return Restaurant(
-        id: snap.id,
-        name: snap['name'],
-        imgUrl: snap['imgUrl'],
-        description: snap['description'],
-        //priceCategory: snap['priceCategory'],
-        tags: (snap['tags'] as List).map((tag) {
-          return tag as String;
-        }).toList(),
-        categories: (snap['categories'] as List).map((category) {
-          return Category.fromSnapshot(category);
-        }).toList(),
-        products: (snap['products'] as List).map((product) {
-          return Product.fromSnapshot(product);
-        }).toList(),
-        openingHours: (snap['openingHours'] as List).map((openingHour) {
-          return OpeningHours.fromSnapshot(openingHour);
-        }).toList(),
-        address: const Place(
-            placeId: "1",
-            name: "Aristocratic Tales",
-            lat: 21.1474852,
-            lng: 72.7649147));
+      id: snap.id,
+      name: snap['name'],
+      imgUrl: snap['imgUrl'],
+      description: snap['description'],
+      //priceCategory: snap['priceCategory'],
+      tags: (snap['tags'] as List).map((tag) {
+        return tag as String;
+      }).toList(),
+      categories: (snap['categories'] as List).map((category) {
+        return Category.fromSnapshot(category);
+      }).toList(),
+      products: (snap['products'] as List).map((product) {
+        return Product.fromSnapshot(product);
+      }).toList(),
+      openingHours: (snap['openingHours'] as List).map((openingHour) {
+        return OpeningHours.fromSnapshot(openingHour);
+      }).toList(),
+      address: const Place(
+          placeId: "1",
+          name: "Aristocratic Tales",
+          lat: 21.1474852,
+          lng: 72.7649147),
+      //address: Place.fromJSON(snap['address'])
+    );
   }
 }

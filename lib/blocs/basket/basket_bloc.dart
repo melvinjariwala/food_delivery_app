@@ -27,7 +27,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     on<ApplyVoucher>(applyVoucher);
     on<SelectDeliveryTime>(selectDeliveryTime);
 
-    _voucherSubscription = voucherBloc.stream.listen((state) {
+    _voucherSubscription = _voucherBloc.stream.listen((state) {
       if (state is VoucherSelected) {
         add(ApplyVoucher(state.voucher));
       }

@@ -4,17 +4,17 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:food_delivery_app/models/place_autocomplete_model.dart';
-import 'package:food_delivery_app/repositories/places/places_repository.dart';
+import 'package:food_delivery_app/models/place_model.dart';
+import 'package:food_delivery_app/repositories/location/location_repository.dart';
 
 part 'autocomplete_event.dart';
 part 'autocomplete_state.dart';
 
 class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
-  final PlacesRepository _placesRepository;
-  //StreamSubscription? _placesSubscription;
-  AutocompleteBloc({required PlacesRepository placesRepository})
-      : _placesRepository = placesRepository,
+  final LocationRepository _locationRepository;
+
+  AutocompleteBloc({required LocationRepository locationRepository})
+      : _locationRepository = locationRepository,
         super(AutocompleteLoading()) {
     on<LoadAutocomplete>(loadAutocomplete);
     on<ClearAutocomplete>(clearAutocomplete);
@@ -23,8 +23,8 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
   FutureOr<void> loadAutocomplete(
       LoadAutocomplete event, Emitter<AutocompleteState> emit) async {
     try {
-      final List<PlaceAutocomplete> autocomplete =
-          await _placesRepository.getAutocomplete(event.searchInput);
+      final List<Place> autocomplete =
+          await _locationRepository.getAutocomplete(event.searchInput);
       emit(AutocompleteLoaded(autocomplete: autocomplete));
     } catch (e) {
       print("Error occured in AutocompleteBloc : $e");
