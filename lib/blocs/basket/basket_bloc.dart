@@ -72,7 +72,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     if (state is BasketLoaded) {
       try {
         Basket basket = state.basket.copyWith(
-            products: List.from(state.basket.products)..add(event.product));
+            products: List.from(state.basket.products)..remove(event.product));
         _basketRepository.saveBasket(basket);
         emit(BasketLoaded(basket: basket));
       } catch (e) {

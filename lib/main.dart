@@ -47,9 +47,6 @@ void main() async {
     ..registerAdapter(BasketAdapter());
 
   runApp(const MyApp());
-  // BlocOverrides.runZoned(() {
-  //   runApp(const MyApp());
-  // }, blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatelessWidget {
