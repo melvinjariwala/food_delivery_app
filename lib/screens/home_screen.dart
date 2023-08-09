@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/authentication/authentication_bloc.dart';
 import 'package:food_delivery_app/blocs/location/location_bloc.dart';
 import 'package:food_delivery_app/blocs/restaurant/restaurant_bloc.dart';
 import 'package:food_delivery_app/models/models.dart';
@@ -17,7 +18,7 @@ import 'package:food_delivery_app/widgets/restaurant_tags.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  static const String routeName = '/';
+  static const String routeName = '/home-screen';
 
   static Route route() {
     return MaterialPageRoute(
@@ -196,7 +197,12 @@ class CustomAppBar extends StatelessWidget with AppBarMixin {
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context
+                .read<AuthenticationBloc>()
+                .add(AuthenticationLogoutRequest());
+            Navigator.of(context).pop();
+          },
           icon: const Icon(Icons.person),
           color: Colors.black),
       title: BlocBuilder<LocationBloc, LocationState>(

@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery_app/blocs/authentication/authentication_bloc.dart';
 import 'package:food_delivery_app/blocs/autocomplete/autocomplete_bloc.dart';
 import 'package:food_delivery_app/blocs/basket/basket_bloc.dart';
 import 'package:food_delivery_app/blocs/filters/filters_bloc.dart';
@@ -18,13 +20,14 @@ import 'package:food_delivery_app/models/deliver_time_model.dart';
 import 'package:food_delivery_app/models/place_model.dart';
 import 'package:food_delivery_app/models/product_model.dart';
 import 'package:food_delivery_app/models/voucher_model.dart';
+import 'package:food_delivery_app/repositories/authentication_repository.dart';
 import 'package:food_delivery_app/repositories/basket/basket_repository.dart';
 import 'package:food_delivery_app/repositories/geolocation/geolocation_repository.dart';
 import 'package:food_delivery_app/repositories/local_storage/local_storage_repository.dart';
 import 'package:food_delivery_app/repositories/location/location_repository.dart';
 import 'package:food_delivery_app/repositories/places/places_repository.dart';
 import 'package:food_delivery_app/repositories/voucher/voucher_repository.dart';
-import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'config/theme.dart';
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<GeoLocationRepository>(
@@ -72,7 +76,10 @@ class MyApp extends StatelessWidget {
             create: (_) => LocationRepository(
                 localDatasource: LocalDatasource(), placesAPI: PlacesAPI())),
         RepositoryProvider<BasketRepository>(
-            create: (_) => BasketRepository(localDatasource: LocalDatasource()))
+            create: (_) =>
+                BasketRepository(localDatasource: LocalDatasource())),
+        RepositoryProvider<AuthenticationRepository>(
+            create: (_) => AuthenticationRepository(firebaseAuth))
       ],
       child: MultiBlocProvider(
         providers: [
@@ -110,13 +117,17 @@ class MyApp extends StatelessWidget {
                   voucherBloc: BlocProvider.of<VoucherBloc>(context),
                   basketRepository: context.read<BasketRepository>())
                 ..add(StartBasket())),
+          BlocProvider<AuthenticationBloc>(
+              create: (context) => AuthenticationBloc(
+                  authenticaitonRepository:
+                      AuthenticationRepository(firebaseAuth)))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Food Delivery',
           theme: theme(),
           onGenerateRoute: AppRouter.onGenerateRoute,
-          initialRoute: HomeScreen.routeName,
+          initialRoute: LoginScreen.routeName,
         ),
       ),
     );

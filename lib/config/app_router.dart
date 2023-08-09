@@ -10,16 +10,22 @@ import 'package:food_delivery_app/screens/edit_basket.dart';
 import 'package:food_delivery_app/screens/filter.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/location_screen.dart';
+import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:food_delivery_app/screens/restaurant_details.dart';
 import 'package:food_delivery_app/screens/restaurant_listing.dart';
+import 'package:food_delivery_app/screens/signup_screen.dart';
 import 'package:food_delivery_app/screens/voucher.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings settings) {
     print('The route is : ${settings.name}');
     switch (settings.name) {
-      case '/':
-        return HomeScreen.route();
+      case LoginScreen.routeName:
+        return LoginScreen.route();
+      case SignupScreen.routeName:
+        return SignupScreen.route();
+      // case '/':
+      //   return HomeScreen.route();
       case HomeScreen.routeName:
         return HomeScreen.route();
       case LocationScreen.routeName:
